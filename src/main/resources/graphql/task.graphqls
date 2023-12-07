@@ -7,6 +7,10 @@ type Query {
     tasksByTagId(tagId: ID): [Task]
 }
 
+type Mutation {
+    addTask(task: TaskCreate): Task
+}
+
 enum Status {
     UNASSIGNED
     STARTED
@@ -16,7 +20,7 @@ enum Status {
 }
 
 type Task {
-    id: ID
+    id: Int
     title: String
     description: String
     timeEstimate: LocalDateTime
@@ -28,8 +32,14 @@ type Task {
     updated: LocalDateTime
 }
 
+input TaskCreate {
+    title: String
+    description: String
+    status: String
+}
+
 type Category {
-    id: ID
+    id: Int
     name: String
     description: String
     created: LocalDateTime
@@ -37,7 +47,7 @@ type Category {
 }
 
 type Tag {
-    id: ID
+    id: Int
     name: String
     description: String
     created: LocalDateTime

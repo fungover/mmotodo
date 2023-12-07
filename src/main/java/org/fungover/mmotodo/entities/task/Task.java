@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.fungover.mmotodo.dto.TaskCreate;
 import org.fungover.mmotodo.entities.category.Category;
 import org.fungover.mmotodo.entities.tag.Tag;
 import org.hibernate.annotations.CreationTimestamp;
@@ -77,5 +78,15 @@ public class Task {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    public static Task of(TaskCreate taskCreate) {
+        Task task = new Task();
+        task.setId(7); //TODO: Remove when implementing repository
+        task.setTitle(taskCreate.title());
+        task.setDescription(taskCreate.description());
+        task.setStatus(taskCreate.status());
+
+        return task;
     }
 }

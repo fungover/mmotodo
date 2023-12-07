@@ -1,11 +1,15 @@
 package org.fungover.mmotodo.services.task;
 
+import org.fungover.mmotodo.dto.TaskCreate;
 import org.fungover.mmotodo.entities.task.Task;
 import org.fungover.mmotodo.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class TaskService {
@@ -31,4 +35,11 @@ public class TaskService {
     public List<Task> getTasksByTagId(int tagId) {
         return taskRepository.findByTagId(tagId);
     }
+
+    @Transactional
+    public Task addTask(TaskCreate newTask) {
+        Task task = Task.of(newTask);
+        return taskRepository.save(task);
+    }
 }
+
