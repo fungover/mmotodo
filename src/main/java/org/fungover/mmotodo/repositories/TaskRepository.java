@@ -1,5 +1,6 @@
 package org.fungover.mmotodo.repositories;
 
+import org.fungover.mmotodo.entities.category.Category;
 import org.fungover.mmotodo.entities.tag.Tag;
 import org.fungover.mmotodo.entities.task.Task;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ import java.util.Optional;
 @Component
 public class TaskRepository {
     private static int counter = 1;
-    private final List<Task> taskList;
+    private List<Task> taskList;
 
     public TaskRepository() {
         this.taskList = List.of(createTask(), createTask(), createTask());
@@ -28,8 +29,16 @@ public class TaskRepository {
         return taskList;
     }
 
-    public Task addTask() {
-        return null;
+    public List<Task> findByCategoryId(int categoryId) {
+        return taskList.stream()
+                .filter(task -> task.getCategory().getId() == categoryId)
+                .toList();
+    }
+
+    public List<Task> findByTagId(int tagId) {
+        return taskList.stream()
+                .filter(task -> task.getTag().getId() == tagId)
+                .toList();
     }
 
     private Task createTask() {
@@ -37,7 +46,14 @@ public class TaskRepository {
         task.setId(counter);
         task.setTitle("Task");
         task.setDescription("This is a test task");
+
+        Category category = new Category();
+        category.setId(1);
+        category.setName("Category");
+        task.setCategory(category);
+
         Tag tag = new Tag();
+        tag.setId(1);
         tag.setName("tag1");
         tag.setDescription("test tag");
         task.setTag(tag);

@@ -3,6 +3,8 @@ scalar LocalDateTime
 type Query {
     taskById(id: ID): Task
     allTasks: [Task]
+    tasksByCategoryId(categoryId: ID): [Task]
+    tasksByTagId(tagId: ID): [Task]
 }
 
 enum Status {
@@ -27,7 +29,7 @@ type Task {
 }
 
 type Category {
-    id: Int
+    id: ID
     name: String
     description: String
     created: LocalDateTime
@@ -35,7 +37,7 @@ type Category {
 }
 
 type Tag {
-    id: Int
+    id: ID
     name: String
     description: String
     created: LocalDateTime

@@ -28,5 +28,15 @@ public class TaskController {
     public List<Task> allTasks() {
         return taskService.getAllTasks();
     }
+
+    @QueryMapping
+    public List<Task> tasksByCategoryId(@Argument int categoryId) {
+        return taskService.getTasksByCategoryId(categoryId);
+    }
+
+    @QueryMapping
+    public List<Task> tasksByTagId(@Argument int tagId) {
+        return taskService.getTasksByTagId(tagId);
+    }
 }
 
