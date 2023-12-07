@@ -1,0 +1,42 @@
+scalar LocalDateTime
+
+type Query {
+    taskById(id: ID): Task
+}
+
+enum Status {
+    UNASSIGNED
+    STARTED
+    DONE
+    PAUSED
+    ABANDONED
+}
+
+type Task {
+    id: ID
+    title: String
+    description: String
+    timeEstimate: LocalDateTime
+    dueDate: LocalDateTime
+    category: Category
+    tag: Tag
+    status: Status
+    created: LocalDateTime
+    updated: LocalDateTime
+}
+
+type Category {
+    id: Int
+    name: String
+    description: String
+    created: LocalDateTime
+    updated: LocalDateTime
+}
+
+type Tag {
+    id: Int
+    name: String
+    description: String
+    created: LocalDateTime
+    updated: LocalDateTime
+}
