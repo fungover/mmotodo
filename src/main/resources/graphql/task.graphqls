@@ -2,6 +2,7 @@ scalar LocalDateTime
 
 type Query {
     taskById(id: ID): Task
+    allTasks: [Task]
 }
 
 enum Status {
