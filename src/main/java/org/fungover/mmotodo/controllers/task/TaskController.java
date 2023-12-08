@@ -2,7 +2,6 @@ package org.fungover.mmotodo.controllers.task;
 
 import jakarta.validation.Valid;
 import org.fungover.mmotodo.dto.TaskCreate;
-import org.fungover.mmotodo.dto.TaskUpdate;
 import org.fungover.mmotodo.entities.task.Task;
 import org.fungover.mmotodo.services.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
