@@ -1,24 +1,32 @@
-package org.fungover.mmotodo.services.task;
+package org.fungover.mmotodo.task;
 
-import org.fungover.mmotodo.dto.TaskCreate;
-import org.fungover.mmotodo.dto.TaskUpdate;
-import org.fungover.mmotodo.entities.task.Task;
-import org.fungover.mmotodo.repositories.TaskRepository;
+import jakarta.validation.Valid;
+import org.fungover.mmotodo.category.Category;
+import org.fungover.mmotodo.category.CategoryRepository;
+import org.fungover.mmotodo.tag.Tag;
+import org.fungover.mmotodo.tag.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
-    //private final CategoryRepositoryFake categoryRepository;
+    private final CategoryRepository categoryRepository;
+    private final TagRepository tagRepository;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(
+            TaskRepository taskRepository,
+            CategoryRepository categoryRepository,
+            TagRepository tagRepository
+    ) {
         this.taskRepository = taskRepository;
-      //  this.categoryRepository = categoryRepository;
+        this.categoryRepository = categoryRepository;
+        this.tagRepository = tagRepository;
     }
 
     public Task getTaskById(int id) {
@@ -38,8 +46,18 @@ public class TaskService {
     }
 
     @Transactional
-    public Task addTask(TaskCreate newTask) {
-        Task task = Task.of(newTask);
+    public Task addTask(TaskCreate taskCreate) {
+        Task task = new Task();
+
+        task.setTitle(taskCreate.title());
+        task.setDescription(taskCreate.description());
+        task.setTimeEstimation(0.0);
+        task.setDueDate(Instant.now().plusSeconds(5 * 60));
+        Tag tag = tagRepository.findById(1).orElseThrow();
+        task.setTag(tag);
+        Category category = categoryRepository.findById(1).orElseThrow();
+        task.setCategory(category);
+
         return taskRepository.save(task);
     }
 
@@ -49,24 +67,21 @@ public class TaskService {
     }
 
     @Transactional
-    public Task updateTask(TaskUpdate taskUpdate) {
+    public boolean updateTask(@Valid TaskUpdate taskUpdate) {
         Task task = taskRepository.findById(taskUpdate.id()).orElseThrow();
 
-        if (taskUpdate.title() != null) task.setTitle(task.getTitle());
-        if (taskUpdate.description() != null) task.setDescription(task.getDescription());
-        if (taskUpdate.status() != null) task.setStatus(task.getStatus());
+        if (!taskUpdate.title().isEmpty()) task.setTitle(task.getTitle());
+        if (!taskUpdate.description().isEmpty()) task.setDescription(task.getDescription());
+        if (!taskUpdate.status().isEmpty()) task.setStatus(task.getStatus());
 
-       /* if (taskUpdate.categoryId() != null) {
-            Category category = categoryRepository.findById(taskUpdate.categoryId()).orElseThrow();
-            task.setCategory(category);
-        }
-        if (taskUpdate.tagId() != null) {
-            Tag tag = tagRepository.findById(taskUpdate.tagId()).orElseThrow();
-            task.setTag(tag);
-        }*/
-        if (taskUpdate.description() != null) task.setDescription(task.getDescription());
+        Tag tag = tagRepository.findById(taskUpdate.tagId()).orElseThrow();
+        task.setTag(tag);
 
-        return taskRepository.save(Task.of(taskUpdate));
+        Category category = categoryRepository.findById(taskUpdate.categoryId()).orElseThrow();
+        task.setCategory(category);
+
+        taskRepository.save(task);
+        return true;
     }
 }
 

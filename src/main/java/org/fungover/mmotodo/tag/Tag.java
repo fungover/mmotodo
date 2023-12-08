@@ -1,4 +1,4 @@
-package org.fungover.mmotodo.entities.tag;
+package org.fungover.mmotodo.tag;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

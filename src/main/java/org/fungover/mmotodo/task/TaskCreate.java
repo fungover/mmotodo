@@ -1,4 +1,4 @@
-package org.fungover.mmotodo.dto;
+package org.fungover.mmotodo.task;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package org.fungover.mmotodo.entities.category;
+package org.fungover.mmotodo.category;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

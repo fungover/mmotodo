@@ -1,19 +1,19 @@
-package org.fungover.mmotodo.entities.task;
+package org.fungover.mmotodo.task;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.fungover.mmotodo.dto.TaskCreate;
-import org.fungover.mmotodo.dto.TaskUpdate;
-import org.fungover.mmotodo.entities.category.Category;
-import org.fungover.mmotodo.entities.tag.Tag;
+import org.fungover.mmotodo.category.Category;
+import org.fungover.mmotodo.tag.Tag;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.Instant;
+import java.time.temporal.TemporalAmount;
 import java.util.Objects;
 
 @Getter
@@ -24,6 +24,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @Setter(AccessLevel.NONE)
     private Integer id;
 
     @Size(max = 255)
@@ -56,12 +57,12 @@ public class Task {
     private String status;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "tag_id", nullable = false)
     private Tag tag;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -81,29 +82,19 @@ public class Task {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 
-    public static Task of(TaskCreate taskCreate) {
-        Task task = new Task();
-        task.setId(7); //TODO: Remove when implementing repository
-        task.setTitle(taskCreate.title());
-        task.setDescription(taskCreate.description());
-        task.setStatus(taskCreate.status());
-
-        return task;
-    }
-
     public static Task of(TaskUpdate taskUpdate) {
         Task task = new Task();
         if (taskUpdate.title() != null) task.setTitle(taskUpdate.title());
         if (taskUpdate.description() != null) task.setDescription(taskUpdate.description());
         if (taskUpdate.status() != null) task.setStatus(taskUpdate.status());
 
-        Category category = new Category();
-        category.setId(taskUpdate.categoryId());
-        task.setCategory(category);
-
         Tag tag = new Tag();
         tag.setId(taskUpdate.tagId());
         task.setTag(tag);
+
+        Category category = new Category();
+        category.setId(taskUpdate.categoryId());
+        task.setCategory(category);
 
         return task;
     }

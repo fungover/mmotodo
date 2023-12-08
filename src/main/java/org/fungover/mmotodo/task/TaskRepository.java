@@ -1,6 +1,6 @@
-package org.fungover.mmotodo.repositories;
+package org.fungover.mmotodo.task;
 
-import org.fungover.mmotodo.entities.task.Task;
+import org.fungover.mmotodo.task.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

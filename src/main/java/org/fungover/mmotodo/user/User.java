@@ -1,11 +1,11 @@
-package org.fungover.mmotodo.entities.user;
+package org.fungover.mmotodo.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.fungover.mmotodo.entities.task.Task;
+import org.fungover.mmotodo.task.Task;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;

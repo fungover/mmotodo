@@ -1,10 +1,6 @@
-package org.fungover.mmotodo.controllers.task;
+package org.fungover.mmotodo.task;
 
 import jakarta.validation.Valid;
-import org.fungover.mmotodo.dto.TaskCreate;
-import org.fungover.mmotodo.dto.TaskUpdate;
-import org.fungover.mmotodo.entities.task.Task;
-import org.fungover.mmotodo.services.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -48,7 +44,8 @@ public class TaskController {
     @MutationMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Task addTask(@Valid @Argument TaskCreate task) {
-         return taskService.addTask(task);
+        System.out.println(task);
+        return taskService.addTask(task);
     }
 
     @MutationMapping
@@ -59,7 +56,7 @@ public class TaskController {
 
     @MutationMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Task updateTask(@Argument @Valid TaskUpdate task){
+    public boolean updateTask(@Argument @Valid TaskUpdate task){
         return taskService.updateTask(task);
     }
 }
