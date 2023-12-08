@@ -9,6 +9,8 @@ type Query {
 
 type Mutation {
     addTask(task: TaskCreate): Task
+    deleteTask(id: ID): Boolean
+    updateTask(task: TaskUpdate) : Boolean
 }
 
 enum Status {
@@ -32,12 +34,6 @@ type Task {
     updated: LocalDateTime
 }
 
-input TaskCreate {
-    title: String
-    description: String
-    status: String
-}
-
 type Category {
     id: Int
     name: String
@@ -52,4 +48,20 @@ type Tag {
     description: String
     created: LocalDateTime
     updated: LocalDateTime
+}
+
+# DTOs
+input TaskCreate {
+    title: String
+    description: String
+    status: String
+}
+
+input TaskUpdate {
+    id: Int
+    title: String
+    description: String
+    categoryId: Int
+    tagId: Int
+    status: String
 }

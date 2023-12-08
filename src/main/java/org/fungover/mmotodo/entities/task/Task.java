@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.fungover.mmotodo.dto.TaskCreate;
+import org.fungover.mmotodo.dto.TaskUpdate;
 import org.fungover.mmotodo.entities.category.Category;
 import org.fungover.mmotodo.entities.tag.Tag;
 import org.hibernate.annotations.CreationTimestamp;
@@ -86,6 +87,23 @@ public class Task {
         task.setTitle(taskCreate.title());
         task.setDescription(taskCreate.description());
         task.setStatus(taskCreate.status());
+
+        return task;
+    }
+
+    public static Task of(TaskUpdate taskUpdate) {
+        Task task = new Task();
+        if (taskUpdate.title() != null) task.setTitle(taskUpdate.title());
+        if (taskUpdate.description() != null) task.setDescription(taskUpdate.description());
+        if (taskUpdate.status() != null) task.setStatus(taskUpdate.status());
+
+        Category category = new Category();
+        category.setId(taskUpdate.categoryId());
+        task.setCategory(category);
+
+        Tag tag = new Tag();
+        tag.setId(taskUpdate.tagId());
+        task.setTag(tag);
 
         return task;
     }
