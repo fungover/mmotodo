@@ -1,0 +1,59 @@
+
+
+
+
+interface TaskInfo {
+    id: Int
+    title: String
+    description: String
+    timeEstimate: LocalDateTime
+    dueDate: LocalDateTime
+    category: Category
+    tag: Tag
+    status: Status
+    created: LocalDateTime
+    updated: LocalDateTime
+}
+
+enum Status {
+    UNASSIGNED
+    STARTED
+    DONE
+    PAUSED
+    ABANDONED
+}
+
+type Task implements TaskInfo{
+    id: Int
+    title: String
+    description: String
+    timeEstimate: LocalDateTime
+    dueDate: LocalDateTime
+    category: Category
+    tag: Tag
+    status: Status
+    created: LocalDateTime
+    updated: LocalDateTime
+}
+
+input TaskCreate {
+    title: String
+    description: String
+    status: String
+}
+
+type Category {
+    id: Int
+    name: String
+    description: String
+    created: LocalDateTime
+    updated: LocalDateTime
+}
+
+type Tag {
+    id: Int
+    name: String
+    description: String
+    created: LocalDateTime
+    updated: LocalDateTime
+}
