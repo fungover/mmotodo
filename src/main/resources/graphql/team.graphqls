@@ -1,0 +1,50 @@
+
+scalar LocalDateTime
+
+type Query {
+    teamById(id: ID): Team
+    allTeams: [Team]
+
+}
+
+type Mutation {
+    createTeam(team: TeamCreate): Team
+    updateTeam(id:ID!, team: TeamUpdate): Team
+    deleteTeam(id:ID!):String
+}
+
+input TeamCreate {
+    name: String!
+    userIds:[ID!]!
+    taskIds: [ID!]!
+
+}
+input TeamUpdate {
+    name: String
+    userIds:[ID!]!
+    taskIds: [ID!]!
+
+}
+
+
+type Team {
+    id: Int
+    name: String!
+    users:[User]!
+    tasks: [TaskInfo]!
+    created: LocalDateTime
+    updated: LocalDateTime
+}
+
+type User{
+    id:Int
+    firstName:String!
+    lastName:String!
+    role:String!
+    created:LocalDateTime
+    updated:LocalDateTime
+    tasks:[TaskInfo]!
+
+}
+
+

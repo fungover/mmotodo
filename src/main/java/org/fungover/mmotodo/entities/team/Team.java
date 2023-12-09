@@ -12,6 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -37,13 +38,13 @@ public class Team {
     @UpdateTimestamp
     private Instant updated;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "users")
-    private User users;
+    private List<User> users;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "tasks")
-    private Task tasks;
+    private List<Task> tasks;
 
     @Override
     public final boolean equals(Object o) {
