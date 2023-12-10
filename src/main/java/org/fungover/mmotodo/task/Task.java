@@ -12,9 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalAmount;
 import java.util.Objects;
 
 @Getter
@@ -81,22 +79,5 @@ public class Task {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
-    }
-
-    public static Task of(TaskUpdate taskUpdate) {
-        Task task = new Task();
-        if (taskUpdate.title() != null) task.setTitle(taskUpdate.title());
-        if (taskUpdate.description() != null) task.setDescription(taskUpdate.description());
-        if (taskUpdate.status() != null) task.setStatus(taskUpdate.status());
-
-        Tag tag = new Tag();
-        tag.setId(taskUpdate.tagId());
-        task.setTag(tag);
-
-        Category category = new Category();
-        category.setId(taskUpdate.categoryId());
-        task.setCategory(category);
-
-        return task;
     }
 }
