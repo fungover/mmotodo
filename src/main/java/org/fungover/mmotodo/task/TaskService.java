@@ -3,6 +3,10 @@ package org.fungover.mmotodo.task;
 import jakarta.validation.Valid;
 import org.fungover.mmotodo.category.Category;
 import org.fungover.mmotodo.category.CategoryRepository;
+import org.fungover.mmotodo.exception.CategoryNotFoundException;
+import org.fungover.mmotodo.exception.ResourceNotFoundException;
+import org.fungover.mmotodo.exception.TagNotFoundException;
+import org.fungover.mmotodo.exception.TaskNotFoundException;
 import org.fungover.mmotodo.tag.Tag;
 import org.fungover.mmotodo.tag.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +35,7 @@ public class TaskService {
     }
 
     public Task getTaskById(int id) {
-        return taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
+        return taskRepository.findById(id).orElseThrow(TaskNotFoundException::new);
     }
 
     public List<Task> getAllTasks() {
@@ -54,9 +58,9 @@ public class TaskService {
         task.setDescription(taskCreate.description());
         task.setTimeEstimation(0.0);
         task.setDueDate(LocalDateTime.now().plusSeconds(5 * 60));
-        Tag tag = tagRepository.findById(1).orElseThrow();
+        Tag tag = tagRepository.findById(1).orElseThrow(TagNotFoundException::new);
         task.setTag(tag);
-        Category category = categoryRepository.findById(1).orElseThrow();
+        Category category = categoryRepository.findById(1).orElseThrow(CategoryNotFoundException::new);
         task.setCategory(category);
 
         return taskRepository.save(task);
@@ -69,16 +73,16 @@ public class TaskService {
 
     @Transactional
     public boolean updateTask(@Valid TaskUpdate taskUpdate) {
-        Task task = taskRepository.findById(taskUpdate.id()).orElseThrow();
+        Task task = taskRepository.findById(taskUpdate.id()).orElseThrow(TaskNotFoundException::new);
 
         if (!taskUpdate.title().isEmpty()) task.setTitle(task.getTitle());
         if (!taskUpdate.description().isEmpty()) task.setDescription(task.getDescription());
         if (!taskUpdate.status().isEmpty()) task.setStatus(task.getStatus());
 
-        Tag tag = tagRepository.findById(taskUpdate.tagId()).orElseThrow();
+        Tag tag = tagRepository.findById(taskUpdate.tagId()).orElseThrow(TagNotFoundException::new);
         task.setTag(tag);
 
-        Category category = categoryRepository.findById(taskUpdate.categoryId()).orElseThrow();
+        Category category = categoryRepository.findById(taskUpdate.categoryId()).orElseThrow(CategoryNotFoundException::new);
         task.setCategory(category);
 
         taskRepository.save(task);
