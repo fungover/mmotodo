@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -52,7 +53,7 @@ public class TaskService {
         task.setTitle(taskCreate.title());
         task.setDescription(taskCreate.description());
         task.setTimeEstimation(0.0);
-        task.setDueDate(Instant.now().plusSeconds(5 * 60));
+        task.setDueDate(LocalDateTime.now().plusSeconds(5 * 60));
         Tag tag = tagRepository.findById(1).orElseThrow();
         task.setTag(tag);
         Category category = categoryRepository.findById(1).orElseThrow();

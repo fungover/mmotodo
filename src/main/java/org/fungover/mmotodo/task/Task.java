@@ -13,6 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.temporal.TemporalAmount;
 import java.util.Objects;
 
@@ -38,11 +39,11 @@ public class Task {
 
     @Column(name = "created")
     @CreationTimestamp
-    private Instant created;
+    private LocalDateTime created;
 
     @Column(name = "updated")
     @UpdateTimestamp
-    private Instant updated;
+    private LocalDateTime updated;
 
     @NotNull
     @Column(name = "time_estimation", nullable = false)
@@ -50,7 +51,7 @@ public class Task {
 
     @NotNull
     @Column(name = "due_date", nullable = false)
-    private Instant dueDate;
+    private LocalDateTime dueDate;
 
     @Lob
     @Column(name = "status")
