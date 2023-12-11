@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TaskService {
@@ -57,7 +57,7 @@ public class TaskService {
         task.setTitle(taskCreate.title());
         task.setDescription(taskCreate.description());
         task.setTimeEstimation(0.0);
-        task.setDueDate(LocalDateTime.now().plusSeconds(5 * 60));
+        task.setDueDate(LocalDateTime.now().plusSeconds(TimeUnit.MINUTES.toSeconds(5)));
         Tag tag = tagRepository.findById(1).orElseThrow(TagNotFoundException::new);
         task.setTag(tag);
         Category category = categoryRepository.findById(1).orElseThrow(CategoryNotFoundException::new);
