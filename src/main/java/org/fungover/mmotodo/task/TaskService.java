@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import org.fungover.mmotodo.category.Category;
 import org.fungover.mmotodo.category.CategoryRepository;
 import org.fungover.mmotodo.exception.CategoryNotFoundException;
-import org.fungover.mmotodo.exception.ResourceNotFoundException;
 import org.fungover.mmotodo.exception.TagNotFoundException;
 import org.fungover.mmotodo.exception.TaskNotFoundException;
 import org.fungover.mmotodo.tag.Tag;
