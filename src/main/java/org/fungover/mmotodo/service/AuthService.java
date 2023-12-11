@@ -5,6 +5,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.fungover.mmotodo.GithubUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -48,6 +50,9 @@ public class AuthService {
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
+
+
 
     public GithubUser getUserData(@AuthenticationPrincipal OAuth2User principal) {
         Map<String, Object> attributes = principal.getAttributes();
@@ -62,7 +67,7 @@ public class AuthService {
     }
 
 
-    public void performLogout() {
+    public boolean performLogout() {
         String accessTokenValue = retrieveAccessToken();
 
         if (accessTokenValue != null) {
@@ -71,29 +76,31 @@ public class AuthService {
             headers.set("Authorization", "Basic " + basicAuth);
             headers.setContentType(MediaType.APPLICATION_JSON);
 
-            if (accessTokenValue != null) {
-                String jsonBody = "{\"access_token\":\"" + accessTokenValue + "\"}";
-                HttpEntity<String> request = new HttpEntity<>(jsonBody, headers);
+            String jsonBody = "{\"access_token\":\"" + accessTokenValue + "\"}";
+            HttpEntity<String> request = new HttpEntity<>(jsonBody, headers);
 
-                // Send request to sign out from OAuth application
-                try {
-                    new RestTemplate().exchange(
-                            githubDeleteUrl,
-                            HttpMethod.DELETE,
-                            request,
-                            String.class
-                    );
-                    clearAuthenticationCookies();
-                } catch (HttpClientErrorException.UnprocessableEntity e) {
-                    System.out.println("Validation error: " + e.getResponseBodyAsString());
-                } catch (Exception e) {
-                    System.out.println("Exception: " + e.getMessage());
-                }
-            } else {
-                // Handle the case where access token retrieval fails
-                System.out.println("Couldn't find access token");
+            // Send request to sign out from OAuth application
+            try {
+                new RestTemplate().exchange(
+                        githubDeleteUrl,
+                        HttpMethod.DELETE,
+                        request,
+                        String.class
+                );
+
+                clearAuthenticationCookies();
+                return true;
+            } catch (HttpClientErrorException.UnprocessableEntity e) {
+                logger.error("Couldn't sign out from GitHub: ", e.getMessage());
+            } catch (Exception e) {
+                logger.error("Exception during logout: ", e.getMessage());
             }
+        } else {
+            // Handle the case where access token retrieval fails
+            logger.warn("Couldn't find access token");
         }
+
+        return false;
     }
 
 

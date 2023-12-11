@@ -1,7 +1,8 @@
-package org.fungover.mmotodo.Controller;
+package org.fungover.mmotodo.controller;
 
 
 import org.fungover.mmotodo.service.AuthService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +17,15 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+
 @RestController
 
 @RequestMapping(value = "/")
 public class AuthController {
 
     private AuthService authService;
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
 
     @Autowired
@@ -42,9 +46,15 @@ public class AuthController {
     /*Accessing this route will sign out the user*/
     @GetMapping("/auth/logout")
     public RedirectView signOut() {
-        authService.performLogout();
-        // redirect user to home page where we have our home page
-        return new RedirectView("/");
+        boolean isSignedOut = authService.performLogout();
+
+        if (isSignedOut) {
+            // redirect user to home page where we have our home page
+            return new RedirectView("/");
+        } else {
+            logger.error("Couldn't log out user");
+            return null;
+        }
     }
 
 
