@@ -50,7 +50,7 @@ public class TaskService {
     }
 
     @Transactional
-    public Task addTask(TaskCreate taskCreate) {
+    public Task addTask(TaskCreateDto taskCreate) {
         Task task = new Task();
 
         task.setTitle(taskCreate.title());
@@ -71,7 +71,7 @@ public class TaskService {
     }
 
     @Transactional
-    public boolean updateTask(@Valid TaskUpdate taskUpdate) {
+    public boolean updateTask(@Valid TaskUpdateDto taskUpdate) {
         Task task = taskRepository.findById(taskUpdate.id()).orElseThrow(TaskNotFoundException::new);
 
         if (!taskUpdate.title().isEmpty()) task.setTitle(task.getTitle());

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
-public record TaskUpdate(
+public record TaskUpdateDto(
         @NotNull @PositiveOrZero
         int id,
         @NotNull @DefaultValue("")

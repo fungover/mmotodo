@@ -43,7 +43,7 @@ public class TaskController {
 
     @MutationMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Task addTask(@Valid @Argument TaskCreate task) {
+    public Task addTask(@Valid @Argument TaskCreateDto task) {
         System.out.println(task);
         return taskService.addTask(task);
     }
@@ -56,7 +56,7 @@ public class TaskController {
 
     @MutationMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public boolean updateTask(@Argument @Valid TaskUpdate task){
+    public boolean updateTask(@Argument @Valid TaskUpdateDto task){
         return taskService.updateTask(task);
     }
 }
