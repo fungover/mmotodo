@@ -1,18 +1,17 @@
 
+scalar LocalDateTime
 
+type Query {
+    taskById(id: ID): Task
+    allTasks: [Task]
+    tasksByCategoryId(categoryId: ID): [Task]
+    tasksByTagId(tagId: ID): [Task]
+}
 
-
-interface TaskInfo {
-    id: Int
-    title: String
-    description: String
-    timeEstimate: LocalDateTime
-    dueDate: LocalDateTime
-    category: Category
-    tag: Tag
-    status: Status
-    created: LocalDateTime
-    updated: LocalDateTime
+type Mutation {
+    addTask(task: TaskCreate): Task
+    deleteTask(id: ID): Boolean
+    updateTask(task: TaskUpdate) : Boolean
 }
 
 enum Status {
@@ -23,7 +22,7 @@ enum Status {
     ABANDONED
 }
 
-type Task implements TaskInfo{
+type Task {
     id: Int
     title: String
     description: String
@@ -34,12 +33,6 @@ type Task implements TaskInfo{
     status: Status
     created: LocalDateTime
     updated: LocalDateTime
-}
-
-input TaskCreate {
-    title: String
-    description: String
-    status: String
 }
 
 type Category {
@@ -56,4 +49,20 @@ type Tag {
     description: String
     created: LocalDateTime
     updated: LocalDateTime
+}
+
+# DTOs
+input TaskCreate {
+    title: String
+    description: String
+    status: String
+}
+
+input TaskUpdate {
+    id: Int
+    title: String
+    description: String
+    categoryId: Int
+    tagId: Int
+    status: String
 }

@@ -31,7 +31,7 @@ type Team {
     id: Int
     name: String!
     users:[User]!
-    tasks: [TaskInfo]!
+    tasks: [Task]!
     created: LocalDateTime
     updated: LocalDateTime
 }
@@ -43,7 +43,7 @@ type User{
     role:String!
     created:LocalDateTime
     updated:LocalDateTime
-    tasks:[TaskInfo]!
+    tasks:[Task]!
 
 }
 
