@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.fungover.mmotodo.category.Category;
 import org.fungover.mmotodo.tag.Tag;
@@ -18,6 +19,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "task")
 public class Task {
     @Id
@@ -64,6 +66,14 @@ public class Task {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    private Task(int id) {
+        this.id = id;
+    }
+
+    public static Task createTestTask(int id) {
+        return new Task(id);
+    }
 
     @Override
     public final boolean equals(Object o) {
