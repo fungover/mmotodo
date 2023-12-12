@@ -2,10 +2,12 @@ package org.fungover.mmotodo.entities.team;
 
 import jakarta.transaction.Transactional;
 import org.fungover.mmotodo.entities.task.Task;
+import org.fungover.mmotodo.entities.task.TaskRepository;
 import org.fungover.mmotodo.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,23 +42,23 @@ public class TeamService {
  }
 
  @Transactional
- public Team createTeam (TeamCreate teamCreate){
+ public Team createTeam (TeamDto teamCreate){
         Team team = new Team();
         team.setName(teamCreate.name());
-       List<User> users = userRepository.findAllById(teamCreate.userIds());
+       List<User> users = userRepository.findAllByIdIn(teamCreate.userIds());
         team.setUsers(Optional.ofNullable(users).orElseThrow(() -> new IllegalStateException("No users found for the specified role.")));
-        List<Task> tasks = taskRepository.findAllById(teamCreate.taskIds());
+        List<Task> tasks = taskRepository.findAllByIdIn(teamCreate.taskIds());
      team.setTasks(Optional.ofNullable(tasks).orElseThrow(() -> new IllegalStateException("No tasks found for the specified category.")));
       return teamRepository.save(team);
  }
 
     @Transactional
-    public Boolean updateTeam ( TeamUpdate teamUpdate){
+    public Boolean updateTeam ( TeamDto teamUpdate){
         Team team = teamRepository.findById(teamUpdate.id()).orElseThrow(() -> new RuntimeException("Team not found"));
         team.setName(teamUpdate.name());
-        List<User> users = userRepository.findAllById(teamUpdate.userIds());
+        List<User> users = userRepository.findAllByIdIn(teamUpdate.userIds());
         team.setUsers(users);
-        List<Task> tasks = taskRepository.findAllById(teamUpdate.taskIds());
+        List<Task> tasks = taskRepository.findAllByIdIn(teamUpdate.taskIds());
         team.setTasks(tasks);
          teamRepository.save(team);
          return true;
