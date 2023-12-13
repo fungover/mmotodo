@@ -12,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.graphql.test.tester.GraphQlTester;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,6 +141,39 @@ class TaskControllerTest {
         graphQlTester.document(query)
                 .execute()
                 .path("tasksByTagId")
+                .matchesJson(expected);
+    }
+
+    @Test
+    void ShouldAddNewTask() throws Exception {
+        TaskCreateDto taskDto = new TaskCreateDto("new task", "this is the new task", "started");
+        Task task = Task.createTestTask(1);
+        task.setTitle(taskDto.title());
+        task.setDescription(taskDto.description());
+        task.setStatus(taskDto.status());
+
+        Mockito.when(taskService.addTask(taskDto)).thenReturn(task);
+
+        // language=GraphQL
+        String query = """
+            mutation {
+                addTask(task: {
+                    title: "new task",
+                    description: "this is the new task",
+                    status: "started"
+                }) {
+                    title
+                    description
+                    status
+                }
+            }
+        """;
+
+        String expected = objectMapper.writeValueAsString(taskDto);
+
+        graphQlTester.document(query)
+                .execute()
+                .path("addTask")
                 .matchesJson(expected);
     }
 
