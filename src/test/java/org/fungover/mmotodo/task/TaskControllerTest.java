@@ -1,5 +1,6 @@
 package org.fungover.mmotodo.task;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.fungover.mmotodo.category.Category;
 import org.fungover.mmotodo.tag.Tag;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.springframework.graphql.test.tester.GraphQlTester;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @GraphQlTest
 @Import(value = {GraphQlConfig.class})
 class TaskControllerTest {
@@ -23,6 +25,9 @@ class TaskControllerTest {
 
     @MockBean
     private TaskService taskService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private final List<Task> tasks = new ArrayList<>();
 
@@ -36,15 +41,20 @@ class TaskControllerTest {
     }
 
     @Test
-    void ShouldRespondWithAllTasks() throws Exception {
+    void ShouldRespondWithAllTaskTitles() throws Exception {
         // language=GraphQL
         String query = "query { allTasks { title } }";
+
+        var expectedList = tasks.stream().map(task -> new Object() {
+            public final String title = task.getTitle();
+        }).toList();
+
+        String expected = objectMapper.writeValueAsString(expectedList);
 
         graphQlTester.document(query)
                 .execute()
                 .path("allTasks")
-                .entityList(Task.class)
-                .hasSize(2);
+                .matchesJson(expected);
     }
 
     private Task createTask(String title) {
