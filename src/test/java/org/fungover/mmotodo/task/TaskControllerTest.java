@@ -5,7 +5,6 @@ import org.fungover.mmotodo.category.Category;
 import org.fungover.mmotodo.tag.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
@@ -13,10 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.graphql.test.tester.GraphQlTester;
 
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @GraphQlTest
 @Import(value = {GraphQlConfig.class})
@@ -31,14 +28,19 @@ class TaskControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static int counter = 1;
+    private static int counter;
+    private List<Task> tasks;
+
+    @BeforeEach
+    void setUp() {
+        counter = 1;
+        tasks = new ArrayList<>();
+        tasks.add(createTask("Something"));
+        tasks.add(createTask("Nice"));
+    }
 
     @Test
     void ShouldRespondWithAllTaskTitles() throws Exception {
-        List<Task> tasks = new ArrayList<>();
-        tasks.add(createTask("Something"));
-        tasks.add(createTask("Nice"));
-
         Mockito.when(taskService.getAllTasks()).thenReturn(tasks);
 
         // language=GraphQL
@@ -99,12 +101,37 @@ class TaskControllerTest {
                 .matchesJson(expected);
     }
 
+    @Test
+    void ShouldRespondWithTasksByCategoryId() throws Exception {
+        Mockito.when(taskService.getTasksByCategoryId(2)).thenReturn(tasks);
+
+        // language=GraphQL
+        String query = "query { tasksByCategoryId(categoryId: 2) { category { id } } }";
+
+        var expectedList = tasks.stream().map(task -> new Object() {
+            public final Object category = new Object() {
+                public final int id = task.getCategory().getId();
+            };
+        }).toList();
+
+        String expected = objectMapper.writeValueAsString(expectedList);
+
+        graphQlTester.document(query)
+                .execute()
+                .path("tasksByCategoryId")
+                .matchesJson(expected);
+    }
+
     private Task createTask(String title) {
-        Task task = Task.createTestTask(counter++);
+        Task task = Task.createTestTask(counter);
         task.setTitle(title);
         task.setDescription("Test task");
-        task.setCategory(new Category());
+        Category category = new Category();
+        category.setId(counter);
+        category.setName("Category");
+        task.setCategory(category);
         task.setTag(new Tag());
+        counter++;
         return task;
     }
 }

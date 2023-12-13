@@ -13,14 +13,6 @@ type Mutation {
     updateTask(task: TaskUpdate) : Boolean
 }
 
-enum Status {
-    UNASSIGNED
-    STARTED
-    DONE
-    PAUSED
-    ABANDONED
-}
-
 type Task {
     id: Int
     title: String
