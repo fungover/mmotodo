@@ -68,6 +68,7 @@ public class TaskService {
 
     @Transactional
     public void deleteTask(int taskId) {
+        taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         taskRepository.deleteById(taskId);
     }
 
