@@ -25,7 +25,7 @@ type Task {
     id: Int
     title: String
     description: String
-    timeEstimate: LocalDateTime
+    timeEstimation: LocalDateTime
     dueDate: LocalDateTime
     category: Category
     tag: Tag
