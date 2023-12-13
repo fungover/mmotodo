@@ -60,7 +60,7 @@ public class AuthController {
             // redirect user to home page where we have our home page
             return new RedirectView("/");
         } else {
-            logger.error("Couldn't log out user");
+            logger.error("Couldn't logout user");
             return null;
         }
     }
