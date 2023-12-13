@@ -77,21 +77,24 @@ public class TaskService {
     }
 
     @Transactional
-    public boolean updateTask(@Valid TaskUpdateDto taskUpdate) {
+    public Task updateTask(@Valid TaskUpdateDto taskUpdate) {
         Task task = taskRepository.findById(taskUpdate.id()).orElseThrow(TaskNotFoundException::new);
 
-        if (!taskUpdate.title().isEmpty()) task.setTitle(task.getTitle());
-        if (!taskUpdate.description().isEmpty()) task.setDescription(task.getDescription());
-        if (!taskUpdate.status().isEmpty()) task.setStatus(task.getStatus());
+        if (taskUpdate.title() != null) task.setTitle(taskUpdate.title());
+        if (taskUpdate.description() != null) task.setDescription(task.getDescription());
+        if (taskUpdate.status() != null) task.setStatus(taskUpdate.status());
 
-        Tag tag = tagRepository.findById(taskUpdate.tagId()).orElseThrow(TagNotFoundException::new);
-        task.setTag(tag);
+        if (taskUpdate.tagId() != null) {
+            Tag tag = tagRepository.findById(taskUpdate.tagId()).orElseThrow(TagNotFoundException::new);
+            task.setTag(tag);
+        }
 
-        Category category = categoryRepository.findById(taskUpdate.categoryId()).orElseThrow(CategoryNotFoundException::new);
-        task.setCategory(category);
+        if (taskUpdate.categoryId() != null) {
+            Category category = categoryRepository.findById(taskUpdate.categoryId()).orElseThrow(CategoryNotFoundException::new);
+            task.setCategory(category);
+        }
 
-        taskRepository.save(task);
-        return true;
+        return taskRepository.save(task);
     }
 }
 

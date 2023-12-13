@@ -57,7 +57,7 @@ public class TaskController {
 
     @MutationMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public boolean updateTask(@Argument @Valid TaskUpdateDto task){
+    public Task updateTask(@Argument @Valid TaskUpdateDto task){
         return taskService.updateTask(task);
     }
 }

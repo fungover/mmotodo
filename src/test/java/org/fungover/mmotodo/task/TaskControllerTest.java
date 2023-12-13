@@ -1,6 +1,7 @@
 package org.fungover.mmotodo.task;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.ToString;
 import org.fungover.mmotodo.category.Category;
 import org.fungover.mmotodo.tag.Tag;
 import org.junit.jupiter.api.BeforeEach;
@@ -156,7 +157,7 @@ class TaskControllerTest {
         // language=GraphQL
         String query = """
                     mutation {
-                        addTask(task: {
+                         addTask(task: {
                             title: "new task",
                             description: "this is the new task",
                             status: "started"
@@ -205,6 +206,48 @@ class TaskControllerTest {
                 .path("deleteTask")
                 .matchesJson(expected);
     }
+
+//    @Test
+//    void ShouldUpdateTask() throws Exception {
+//        TaskUpdateDto updateDto = new TaskUpdateDto(1, "Updated Task", "this is the new task", "completed", 1, 1);
+//        Task task = Task.createTestTask(1);
+//        task.setTitle(updateDto.title());
+//        task.setDescription(updateDto.description());
+//        task.setStatus(updateDto.status());
+//
+//        Mockito.when(taskService.updateTask(updateDto)).thenReturn(task);
+//
+//        // language=GraphQL
+//        String query = """
+//                        mutation {
+//                            updateTask(task: {
+//                                id: 1,
+//                                title: "Updated Task"
+//                            }) {
+//                                id
+//                                title
+//                                description
+//                                status,
+//                                created,
+//                                updated,
+//                                timeEstimation,
+//                                dueDate
+//                                tag {id},
+//                                category {id}
+//                            }
+//                        }
+//                """;
+//
+//        String expected = objectMapper.writeValueAsString(task);
+//
+//        System.out.println(expected);
+//
+//        graphQlTester.document(query)
+//                .execute()
+//                .path("updateTask")
+//                .matchesJson(expected);
+//
+//    }
 
     private Task createTask(String title) {
         Task task = Task.createTestTask(counter);
