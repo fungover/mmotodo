@@ -36,11 +36,17 @@ public class AuthController {
     /*Data that can be access to be used in out frontend*/
     @GetMapping("/api/user")
     public ResponseEntity<Object> signIn(@AuthenticationPrincipal OAuth2User principal) {
-        Optional<Object> githubUser = Optional.ofNullable(authService.getUserData(principal));
-        if (githubUser.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Couldn't find user data");
+        try {
+            Optional<Object> githubUser = Optional.ofNullable(authService.getUserData(principal));
+
+            if (githubUser.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Couldn't find user data");
+            }
+            return ResponseEntity.ok(githubUser.get());
+        } catch (Exception e) {
+            logger.error("Error retrieving data", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving data");
         }
-        return ResponseEntity.ok(githubUser);
     }
 
     /*Accessing this route will sign out the user*/
