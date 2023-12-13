@@ -122,15 +122,37 @@ class TaskControllerTest {
                 .matchesJson(expected);
     }
 
+    @Test
+    void ShouldRespondWithTasksByTagId() throws Exception {
+        Mockito.when(taskService.getTasksByTagId(2)).thenReturn(tasks);
+
+        // language=GraphQL
+        String query = "query { tasksByTagId(tagId: 2) { tag { id } } }";
+
+        var expectedList = tasks.stream().map(task -> new Object() {
+            public final Object tag = new Object() {
+                public final int id = task.getTag().getId();
+            };
+        }).toList();
+
+        String expected = objectMapper.writeValueAsString(expectedList);
+
+        graphQlTester.document(query)
+                .execute()
+                .path("tasksByTagId")
+                .matchesJson(expected);
+    }
+
     private Task createTask(String title) {
         Task task = Task.createTestTask(counter);
         task.setTitle(title);
         task.setDescription("Test task");
         Category category = new Category();
         category.setId(counter);
-        category.setName("Category");
         task.setCategory(category);
-        task.setTag(new Tag());
+        Tag tag = new Tag();
+        tag.setId(counter);
+        task.setTag(tag);
         counter++;
         return task;
     }
