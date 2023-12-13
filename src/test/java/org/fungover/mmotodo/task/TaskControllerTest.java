@@ -12,7 +12,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.graphql.test.tester.GraphQlTester;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,33 +65,33 @@ class TaskControllerTest {
 
         // language=GraphQL
         String query = """
-          query MyQuery {
-          taskById(id: 1) {
-            id
-            title
-            description
-            created
-            updated
-            timeEstimation
-            dueDate
-            status
-            tag {
-              id
-              name
-              description
-              created
-              updated
-            }
-            category {
-              id
-              name
-              description
-              created
-              updated
-            }
-          }
-        }
-        """;
+                  query MyQuery {
+                  taskById(id: 1) {
+                    id
+                    title
+                    description
+                    created
+                    updated
+                    timeEstimation
+                    dueDate
+                    status
+                    tag {
+                      id
+                      name
+                      description
+                      created
+                      updated
+                    }
+                    category {
+                      id
+                      name
+                      description
+                      created
+                      updated
+                    }
+                  }
+                }
+                """;
 
         String expected = objectMapper.writeValueAsString(task);
 
@@ -156,24 +155,54 @@ class TaskControllerTest {
 
         // language=GraphQL
         String query = """
-            mutation {
-                addTask(task: {
-                    title: "new task",
-                    description: "this is the new task",
-                    status: "started"
-                }) {
-                    title
-                    description
-                    status
-                }
-            }
-        """;
+                    mutation {
+                        addTask(task: {
+                            title: "new task",
+                            description: "this is the new task",
+                            status: "started"
+                        }) {
+                            title
+                            description
+                            status
+                        }
+                    }
+                """;
 
         String expected = objectMapper.writeValueAsString(taskDto);
 
         graphQlTester.document(query)
                 .execute()
                 .path("addTask")
+                .matchesJson(expected);
+    }
+
+    @Test
+    void ShouldHandleSuccessDeleteTaskResponse() throws Exception {
+        Mockito.when(taskService.deleteTask(1)).thenReturn(true);
+
+        // language=GraphQL
+        String query = "mutation { deleteTask(id: 1) }";
+
+        String expected = objectMapper.writeValueAsString("Task with id: 1 is deleted");
+
+        graphQlTester.document(query)
+                .execute()
+                .path("deleteTask")
+                .matchesJson(expected);
+    }
+
+    @Test
+    void ShouldHandleFailedDeleteTaskResponse() throws Exception {
+        Mockito.when(taskService.deleteTask(1)).thenReturn(false);
+
+        // language=GraphQL
+        String query = "mutation { deleteTask(id: 1) }";
+
+        String expected = objectMapper.writeValueAsString("Could not delete task with id 1");
+
+        graphQlTester.document(query)
+                .execute()
+                .path("deleteTask")
                 .matchesJson(expected);
     }
 

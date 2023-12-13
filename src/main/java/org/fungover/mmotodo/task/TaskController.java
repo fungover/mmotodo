@@ -43,7 +43,6 @@ public class TaskController {
     @MutationMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Task addTask(@Valid @Argument TaskCreateDto task) {
-        System.out.println(task);
         return taskService.addTask(task);
     }
 
@@ -53,7 +52,7 @@ public class TaskController {
         if(taskService.deleteTask(id)) {
             return "Task with id: " + id + " is deleted";
         }
-        return "Could not delete task with " + id;
+        return "Could not delete task with id " + id;
     }
 
     @MutationMapping()
