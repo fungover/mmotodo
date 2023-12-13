@@ -35,7 +35,6 @@ import java.util.Base64;
 import java.util.Map;
 
 @Service
-@PropertySource("classpath:application.properties")
 public class AuthService {
 
     @Value("${spring.security.oauth2.client.registration.github.clientId}")
