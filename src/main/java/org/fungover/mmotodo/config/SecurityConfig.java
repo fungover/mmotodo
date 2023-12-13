@@ -30,7 +30,6 @@ public class SecurityConfig {
                         .anyRequest().denyAll()
                 )
                 .oauth2Login(login -> login
-                        .defaultSuccessUrl("/")
                         .successHandler(authenticationSuccessHandler)
                 );
 
