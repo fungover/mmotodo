@@ -131,16 +131,16 @@ public class AuthService {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
         if (attributes != null) {
-            HttpServletRequest request = attributes.getRequest();
-            HttpServletResponse response = attributes.getResponse();
+            HttpServletRequest req = attributes.getRequest();
+            HttpServletResponse res = attributes.getResponse();
 
-            Cookie[] cookies = request.getCookies();
+            Cookie[] cookies = req.getCookies();
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
                     if (cookie.getName().equals("JSESSIONID")) {
                         cookie.setMaxAge(0);
                         cookie.setPath("/");
-                        response.addCookie(cookie);
+                        res.addCookie(cookie);
                     }
                 }
             }

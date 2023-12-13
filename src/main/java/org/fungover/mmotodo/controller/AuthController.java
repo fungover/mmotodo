@@ -35,7 +35,7 @@ public class AuthController {
         this.authService = authService;
     }
 
-    /*Data that can be access to be used in out frontend*/
+    /*Data that can access in our frontend*/
     @GetMapping("/api/user")
     public ResponseEntity<Object> signIn(@AuthenticationPrincipal OAuth2User principal) {
         try {
