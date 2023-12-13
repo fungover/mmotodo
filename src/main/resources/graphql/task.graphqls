@@ -29,7 +29,7 @@ type Task {
     dueDate: LocalDateTime
     category: Category
     tag: Tag
-    status: Status
+    status: String
     created: LocalDateTime
     updated: LocalDateTime
 }

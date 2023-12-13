@@ -55,6 +55,7 @@ public class TaskService {
 
         task.setTitle(taskCreate.title());
         task.setDescription(taskCreate.description());
+        task.setStatus(taskCreate.status());
         task.setTimeEstimation(0.0);
         task.setDueDate(LocalDateTime.now().plusSeconds(TimeUnit.MINUTES.toSeconds(5)));
         Tag tag = tagRepository.findById(1).orElseThrow(TagNotFoundException::new);
