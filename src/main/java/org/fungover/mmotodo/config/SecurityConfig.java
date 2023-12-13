@@ -18,9 +18,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/auth/logout", "/api/user").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/auth/logout", "/api/user",githubSignOutUrl).authenticated()
                         .requestMatchers(HttpMethod.GET, "/").permitAll()
-                        .requestMatchers(githubSignOutUrl).authenticated()
                         .anyRequest().denyAll()
                 )
                 .oauth2Login(login -> login
