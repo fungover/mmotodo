@@ -4,12 +4,10 @@ package org.fungover.mmotodo.service;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.fungover.mmotodo.GithubUser;
+import org.fungover.mmotodo.dto.GithubUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.*;
 
 import org.springframework.security.core.Authentication;
@@ -46,11 +44,13 @@ public class AuthService {
     @Value("${github.api.logout.url}")
     private String githubDeleteUrl;
 
-    @Autowired
-    private OAuth2AuthorizedClientService authorizedClientService;
+    private final OAuth2AuthorizedClientService authorizedClientService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
+    public AuthService(OAuth2AuthorizedClientService authorizedClientService) {
+        this.authorizedClientService = authorizedClientService;
+    }
 
 
     public GithubUser getUserData(@AuthenticationPrincipal OAuth2User principal) {
@@ -60,9 +60,13 @@ public class AuthService {
         int id = (int) attributes.get("id");
         String avatarUrl = attributes.get("avatar_url").toString();
         String githubProfileUrl = attributes.get("html_url").toString();
+        String email = attributes.get("email") != null ? attributes.get("email").toString() : null;
+        String createdAt = attributes.get("created_at").toString();
+        String updatedAt = attributes.get("updated_at").toString();
 
 
-        return new GithubUser(userName, name, id, avatarUrl, githubProfileUrl);
+        return new GithubUser(userName, name, id, avatarUrl, githubProfileUrl, email, createdAt, updatedAt);
+
     }
 
 

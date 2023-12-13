@@ -1,6 +1,8 @@
 package org.fungover.mmotodo.controller;
 
 
+
+import org.fungover.mmotodo.dto.GithubUser;
 import org.fungover.mmotodo.service.AuthService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,7 @@ public class AuthController {
     @GetMapping("/api/user")
     public ResponseEntity<Object> signIn(@AuthenticationPrincipal OAuth2User principal) {
         try {
-            Optional<Object> githubUser = Optional.ofNullable(authService.getUserData(principal));
+            Optional<GithubUser> githubUser = Optional.ofNullable(authService.getUserData(principal));
 
             if (githubUser.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Couldn't find user data");
