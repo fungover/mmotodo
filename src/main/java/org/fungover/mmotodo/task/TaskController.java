@@ -6,13 +6,10 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
-import java.util.Objects;
-
 
 @Controller
 public class TaskController {
@@ -53,8 +50,10 @@ public class TaskController {
     @MutationMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteTask(@Argument int id) {
-        taskService.deleteTask(id);
-        return "task with id: " + id + " is deleted";
+        if(taskService.deleteTask(id)) {
+            return "Task with id: " + id + " is deleted";
+        }
+        return "Could not delete task with " + id;
     }
 
     @MutationMapping()
