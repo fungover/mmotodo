@@ -37,7 +37,7 @@ public class AuthController {
 
     /*Data that can access in our frontend*/
     @GetMapping("/api/user")
-    public ResponseEntity<Object> signIn(@AuthenticationPrincipal OAuth2User principal) {
+    public ResponseEntity<Object> getUserData(@AuthenticationPrincipal OAuth2User principal) {
         try {
             Optional<GithubUser> githubUser = Optional.ofNullable(authService.getUserData(principal));
 
