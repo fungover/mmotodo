@@ -1,28 +1,29 @@
 
-scalar LocalDateTime
 
-type Query {
+
+extend type Query {
+    allTeams: [Team!]!
     teamById(id: ID): Team
-    allTeams: [Team]
+
 
 }
 
-type Mutation {
-    createTeam(team: TeamCreate): Team
-    updateTeam(id:ID!, team: TeamUpdate): Team
+
+extend type Mutation {
+    createTeam(team: TeamCreate!): Team!
+    updateTeam( input: TeamUpdate!): Team!
+    addUserToTeam(teamId: ID!, userId: ID!): Team!
+    removeUserFromTeam(teamId: ID!, userId: ID!): String!
     deleteTeam(id:ID!):String
+
 }
+
 
 input TeamCreate {
     name: String!
-    userIds:[ID!]!
-    taskIds: [ID!]!
-
 }
 input TeamUpdate {
-    name: String
-    userIds:[ID!]!
-    taskIds: [ID!]!
+    name: String!
 
 }
 
@@ -30,8 +31,8 @@ input TeamUpdate {
 type Team {
     id: Int
     name: String!
-    users:[User]!
-    tasks: [Task]!
+    users:[User!]!
+    tasks: [Task!]!
     created: LocalDateTime
     updated: LocalDateTime
 }

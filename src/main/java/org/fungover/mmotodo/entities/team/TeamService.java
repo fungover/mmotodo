@@ -1,25 +1,26 @@
 package org.fungover.mmotodo.entities.team;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.fungover.mmotodo.entities.task.Task;
 import org.fungover.mmotodo.entities.task.TaskRepository;
 import org.fungover.mmotodo.entities.user.User;
+import org.fungover.mmotodo.entities.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 
 @Service
 public class TeamService {
     private final TeamRepository teamRepository;
-    // I will inject it when I get the userRepository
+
     private final UserRepository userRepository;
-    // I will inject it when I get the taskRepository
+
     private final TaskRepository taskRepository;
     @Autowired
-    public TeamService(TeamRepository teamRepository,UserRepository userRepository,TaskRepository taskRepository) {
+    public TeamService(TeamRepository teamRepository, UserRepository userRepository, TaskRepository taskRepository) {
 
         this.teamRepository = teamRepository;
         this.userRepository = userRepository;
@@ -41,28 +42,33 @@ public class TeamService {
      return "Team with id:" + teamId + " deleted";
  }
 
- @Transactional
+
  public Team createTeam (TeamDto teamCreate){
         Team team = new Team();
         team.setName(teamCreate.name());
-       List<User> users = userRepository.findAllByIdIn(teamCreate.userIds());
-        team.setUsers(Optional.ofNullable(users).orElseThrow(() -> new IllegalStateException("No users found for the specified role.")));
-        List<Task> tasks = taskRepository.findAllByIdIn(teamCreate.taskIds());
-     team.setTasks(Optional.ofNullable(tasks).orElseThrow(() -> new IllegalStateException("No tasks found for the specified category.")));
-      return teamRepository.save(team);
+       return teamRepository.save(team);
  }
 
-    @Transactional
+
     public Boolean updateTeam ( TeamDto teamUpdate){
         Team team = teamRepository.findById(teamUpdate.id()).orElseThrow(() -> new RuntimeException("Team not found"));
         team.setName(teamUpdate.name());
-        List<User> users = userRepository.findAllByIdIn(teamUpdate.userIds());
-        team.setUsers(users);
-        List<Task> tasks = taskRepository.findAllByIdIn(teamUpdate.taskIds());
-        team.setTasks(tasks);
          teamRepository.save(team);
          return true;
+    }
 
+    public void addUserToTeam(int teamId, int userId) {
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new EntityNotFoundException("Team with ID " + teamId + " not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with ID " + userId + " not found"));
+        team.getUsers().add(user);
+        teamRepository.save(team);
+    }
+
+    public void removeUserFromTeam(int teamId, int userId) {
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new EntityNotFoundException("Team with ID " + teamId + " not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with ID " + userId + " not found"));
+        team.getUsers().remove(user);
+        teamRepository.save(team);
     }
 }
 

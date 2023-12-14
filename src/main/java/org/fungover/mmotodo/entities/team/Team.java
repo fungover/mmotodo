@@ -38,7 +38,7 @@ public class Team {
     @UpdateTimestamp
     private Instant updated;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "users")
     private List<User> users;
 

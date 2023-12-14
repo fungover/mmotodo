@@ -26,15 +26,21 @@ public class TeamController {
     }
 
     @QueryMapping
-    public List<Team> allTasks() {
+    public List<Team> allTeams() {
         return teamService.getAllTeams();
     }
 
 
     @MutationMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Team addTeam(@Valid @Argument TeamCreate team) {
+    public Team addTeam(@Valid @Argument TeamDto team) {
         return teamService.createTeam(team);
+    }
+
+    @MutationMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void  addUserToTeam(@Valid @Argument int teamId, int userId) {
+        teamService.addUserToTeam(teamId,userId);
     }
 
     @MutationMapping
@@ -44,9 +50,18 @@ public class TeamController {
         return "team successfully deleted";
     }
 
+    @MutationMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String removeUserFromTeam(@Argument int teamId, int userId) {
+        teamService.removeUserFromTeam(teamId,userId);
+        return "user successfully removed from team";
+    }
+
+
+
     @MutationMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public boolean updateTeam(@Argument @Valid TeamUpdate team){
+    public boolean updateTeam(@Argument @Valid TeamDto team){
         return teamService.updateTeam(team);
     }
 }

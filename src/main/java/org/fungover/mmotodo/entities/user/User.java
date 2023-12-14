@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.fungover.mmotodo.entities.task.Task;
+import org.fungover.mmotodo.entities.team.Team;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
@@ -50,6 +51,7 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tasks", nullable = false)
     private Task tasks;
+
 
     @Override
     public final boolean equals(Object o) {
