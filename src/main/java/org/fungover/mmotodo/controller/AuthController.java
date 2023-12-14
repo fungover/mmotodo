@@ -1,12 +1,13 @@
 package org.fungover.mmotodo.controller;
 
 
-
 import org.fungover.mmotodo.dto.GithubUser;
 import org.fungover.mmotodo.service.AuthService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,13 +18,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 
 @RestController
-
-@RequestMapping(value = "/")
+@RequestMapping()
 public class AuthController {
 
     private AuthService authService;
@@ -33,6 +37,18 @@ public class AuthController {
     @Autowired
     public AuthController(AuthService authService) {
         this.authService = authService;
+    }
+
+    // Instead of using @Controller to serve HTML pages
+    @GetMapping("/login")
+    public ResponseEntity<String> showLoginPage() throws IOException {
+        ClassPathResource resource = new ClassPathResource("static/auth/index.html");
+        Path path = resource.getFile().toPath();
+        String content = Files.readString(path, StandardCharsets.UTF_8);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.TEXT_HTML)
+                .body(content);
     }
 
     /*Data that can access in our frontend*/
@@ -57,7 +73,7 @@ public class AuthController {
         boolean isSignedOut = authService.performLogout();
 
         if (isSignedOut) {
-            // redirect user to home page where we have our home page
+            // Redirect user to home page where we have our home page
             return new RedirectView("/");
         } else {
             logger.error("Couldn't logout user");

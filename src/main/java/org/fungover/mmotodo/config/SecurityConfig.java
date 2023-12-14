@@ -26,10 +26,11 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/auth/logout", "/api/user", githubSignOutUrl).authenticated()
-                        .requestMatchers(HttpMethod.GET, "/").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/login").permitAll()
                         .anyRequest().denyAll()
                 )
                 .oauth2Login(login -> login
+                        .loginPage("/login")
                         .successHandler(authenticationSuccessHandler)
                 );
 
