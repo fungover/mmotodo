@@ -130,19 +130,21 @@ public class AuthService {
     private void clearAuthenticationCookies() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
-        if (attributes != null) {
-            HttpServletRequest req = attributes.getRequest();
-            HttpServletResponse res = attributes.getResponse();
+        if (attributes == null) {
+            return;
+        }
 
-            Cookie[] cookies = req.getCookies();
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    if (cookie.getName().equals("JSESSIONID")) {
-                        cookie.setMaxAge(0);
-                        cookie.setPath("/");
-                        res.addCookie(cookie);
-                    }
-                }
+        HttpServletRequest req = attributes.getRequest();
+        HttpServletResponse res = attributes.getResponse();
+
+        Cookie[] cookies = req.getCookies();
+
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("JSESSIONID")) {
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                assert res != null;
+                res.addCookie(cookie);
             }
         }
     }
