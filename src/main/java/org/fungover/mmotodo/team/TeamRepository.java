@@ -1,4 +1,4 @@
-package org.fungover.mmotodo.entities.team;
+package org.fungover.mmotodo.team;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package org.fungover.mmotodo.entities.team;
+package org.fungover.mmotodo.team;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

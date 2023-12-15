@@ -1,6 +1,9 @@
-package org.fungover.mmotodo.entities.team;
+package org.fungover.mmotodo.team;
 
 import jakarta.validation.Valid;
+import org.fungover.mmotodo.team.Team;
+import org.fungover.mmotodo.team.TeamDto;
+import org.fungover.mmotodo.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;

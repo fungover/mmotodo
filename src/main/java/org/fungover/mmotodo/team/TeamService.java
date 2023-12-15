@@ -1,11 +1,11 @@
-package org.fungover.mmotodo.entities.team;
+package org.fungover.mmotodo.team;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.fungover.mmotodo.entities.task.Task;
-import org.fungover.mmotodo.entities.task.TaskRepository;
-import org.fungover.mmotodo.entities.user.User;
-import org.fungover.mmotodo.entities.user.UserRepository;
+import org.fungover.mmotodo.task.Task;
+import org.fungover.mmotodo.task.TaskRepository;
+import org.fungover.mmotodo.user.User;
+import org.fungover.mmotodo.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
