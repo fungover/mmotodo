@@ -1,24 +1,22 @@
-package org.fungover.mmotodo.entities.task;
+package org.fungover.mmotodo.category;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.fungover.mmotodo.entities.category.Category;
-import org.fungover.mmotodo.entities.tag.Tag;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "task")
-public class Task {
+@Table(name = "category")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -26,8 +24,8 @@ public class Task {
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "title", nullable = false)
-    private String title;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Size(max = 255)
     @Column(name = "description")
@@ -35,33 +33,11 @@ public class Task {
 
     @Column(name = "created")
     @CreationTimestamp
-    private Instant created;
+    private LocalDateTime created;
 
     @Column(name = "updated")
     @UpdateTimestamp
-    private Instant updated;
-
-    @NotNull
-    @Column(name = "time_estimation", nullable = false)
-    private Double timeEstimation;
-
-    @NotNull
-    @Column(name = "due_date", nullable = false)
-    private Instant dueDate;
-
-    @Lob
-    @Column(name = "status")
-    private String status;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tag_id", nullable = false)
-    private Tag tag;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    private LocalDateTime updated;
 
     @Override
     public final boolean equals(Object o) {
@@ -70,8 +46,8 @@ public class Task {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Task task = (Task) o;
-        return getId() != null && Objects.equals(getId(), task.getId());
+        Category category = (Category) o;
+        return getId() != null && Objects.equals(getId(), category.getId());
     }
 
     @Override

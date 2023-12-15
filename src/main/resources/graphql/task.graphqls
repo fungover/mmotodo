@@ -1,36 +1,27 @@
-
 scalar LocalDateTime
 
 type Query {
-    taskById(id: ID): Task
+    taskById(id: Int): Task
     allTasks: [Task]
-    tasksByCategoryId(categoryId: ID): [Task]
-    tasksByTagId(tagId: ID): [Task]
+    tasksByCategoryId(categoryId: Int): [Task]
+    tasksByTagId(tagId: Int): [Task]
 }
 
 type Mutation {
     addTask(task: TaskCreate): Task
-    deleteTask(id: ID): Boolean
-    updateTask(task: TaskUpdate) : Boolean
-}
-
-enum Status {
-    UNASSIGNED
-    STARTED
-    DONE
-    PAUSED
-    ABANDONED
+    deleteTask(id: Int): String
+    updateTask(task: TaskUpdate) : Task
 }
 
 type Task {
     id: Int
     title: String
     description: String
-    timeEstimate: LocalDateTime
+    timeEstimation: Int
     dueDate: LocalDateTime
     category: Category
     tag: Tag
-    status: Status
+    status: String
     created: LocalDateTime
     updated: LocalDateTime
 }
@@ -62,7 +53,8 @@ input TaskUpdate {
     id: Int
     title: String
     description: String
+    status: String
     categoryId: Int
     tagId: Int
-    status: String
+
 }

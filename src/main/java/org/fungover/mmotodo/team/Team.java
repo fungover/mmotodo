@@ -1,18 +1,17 @@
-package org.fungover.mmotodo.entities.team;
+package org.fungover.mmotodo.team;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.fungover.mmotodo.entities.user.User;
-import org.fungover.mmotodo.entities.task.Task;
+import org.fungover.mmotodo.user.User;
+import org.fungover.mmotodo.task.Task;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.Instant;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -32,11 +31,11 @@ public class Team {
 
     @Column(name = "created")
     @CreationTimestamp
-    private Instant created;
+    private LocalDateTime created;
 
     @Column(name = "updated")
     @UpdateTimestamp
-    private Instant updated;
+    private LocalDateTime updated;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "users")
