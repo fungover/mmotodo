@@ -1,0 +1,59 @@
+scalar LocalDateTime
+
+type Query {
+    taskById(id: Int): Task
+    allTasks: [Task]
+    tasksByCategoryId(categoryId: Int): [Task]
+    tasksByTagId(tagId: Int): [Task]
+}
+
+type Mutation {
+    addTask(task: TaskCreate): Task
+    deleteTask(id: Int): String
+    updateTask(task: TaskUpdate) : Task
+}
+
+type Task {
+    id: Int
+    title: String
+    description: String
+    timeEstimation: Int
+    dueDate: LocalDateTime
+    category: Category
+    tag: Tag
+    status: String
+    created: LocalDateTime
+    updated: LocalDateTime
+}
+
+type Category {
+    id: Int
+    name: String
+    description: String
+    created: LocalDateTime
+    updated: LocalDateTime
+}
+
+type Tag {
+    id: Int
+    name: String
+    description: String
+    created: LocalDateTime
+    updated: LocalDateTime
+}
+
+# DTOs
+input TaskCreate {
+    title: String
+    description: String
+    status: String
+}
+
+input TaskUpdate {
+    id: Int
+    title: String
+    description: String
+    status: String
+    categoryId: Int
+    tagId: Int
+}
