@@ -1,22 +1,23 @@
-package org.fungover.mmotodo.entities.tag;
+package org.fungover.mmotodo.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.fungover.mmotodo.task.Task;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "tag")
-public class Tag {
+@Table(name = "user")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -24,20 +25,31 @@ public class Tag {
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
 
     @Size(max = 255)
-    @Column(name = "description")
-    private String description;
+    @NotNull
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
+    @NotNull
+    @Lob
+    @Column(name = "role", nullable = false)
+    private String role;
 
     @Column(name = "created")
     @CreationTimestamp
-    private Instant created;
+    private LocalDateTime created;
 
     @Column(name = "updated")
     @UpdateTimestamp
-    private Instant updated;
+    private LocalDateTime updated;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "tasks", nullable = false)
+    private Task tasks;
 
     @Override
     public final boolean equals(Object o) {
@@ -46,8 +58,8 @@ public class Tag {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Tag tag = (Tag) o;
-        return getId() != null && Objects.equals(getId(), tag.getId());
+        User user = (User) o;
+        return getId() != null && Objects.equals(getId(), user.getId());
     }
 
     @Override
