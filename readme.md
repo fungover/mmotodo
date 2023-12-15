@@ -44,8 +44,6 @@ In the request body you must pass a json object with a property query where you 
 
 ### Task response
 
-`200 OK, 201 CREATED, 202 NO-CONTENT`
-
 ```json
   {
     "data": {
@@ -58,9 +56,7 @@ In the request body you must pass a json object with a property query where you 
     }
   }
 ```
-
-`404 NOT_FOUND`
-
+Error
 ```json
 {
     "errors": [
