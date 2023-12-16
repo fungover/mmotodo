@@ -1,5 +1,5 @@
 
-
+scalar LocalDateTime
 
 extend type Query {
     allTeams: [Team!]!
@@ -21,9 +21,14 @@ extend type Mutation {
 
 input TeamCreate {
     name: String!
+    users:[ID]!
+    tasks:[ID]!
 }
 input TeamUpdate {
+    id: Int
     name: String!
+    users:[ID]!
+    tasks:[ID]!
 
 }
 

@@ -1,4 +1,4 @@
-scalar LocalDateTime
+
 
 type Query {
     taskById(id: Int): Task

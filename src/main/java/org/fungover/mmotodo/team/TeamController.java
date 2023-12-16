@@ -42,7 +42,7 @@ public class TeamController {
 
     @MutationMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void  addUserToTeam(@Valid @Argument int teamId, int userId) {
+    public void  addUserToTeam(@Valid @Argument int teamId, @Argument int userId) {
         teamService.addUserToTeam(teamId,userId);
     }
 
@@ -61,10 +61,9 @@ public class TeamController {
     }
 
 
-
     @MutationMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public boolean updateTeam(@Argument @Valid TeamDto team){
+    public Team updateTeam(@Argument @Valid TeamDto team){
         return teamService.updateTeam(team);
     }
 }

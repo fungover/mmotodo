@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record TeamDto(int id, @NotNull @NotEmpty String name
+public record TeamDto(int id, String name, List<Integer> users, List<Integer> tasks
                ) {
 
 
