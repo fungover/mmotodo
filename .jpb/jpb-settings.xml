@@ -3,7 +3,7 @@
   <component name="DatabaseMigrationSettings" lastSelectedDirectory="src/main/resources/db/migration" />
   <component name="PersistenceUnitSettings">
     <persistence-units>
-      <persistence-unit name="Default">
+      <persistence-unit moduleName="mmotodo" name="Default">
         <packages>
           <package value="org.fungover.mmotodo" />
         </packages>

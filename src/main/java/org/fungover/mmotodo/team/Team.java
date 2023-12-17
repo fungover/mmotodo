@@ -12,6 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,12 +40,28 @@ public class Team {
     private LocalDateTime updated;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users")
+    @JoinColumn(name = "team_id")
     private List<User> users;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tasks")
+    @JoinColumn(name = "team_id")
     private List<Task> tasks;
+
+    public void addUser(User user){
+        users.add(user);
+    }
+
+    public void removeUser(User user){
+        users.remove(user);
+    }
+
+    public void addTask(Task task){
+       tasks.add(task);
+    }
+    public void removeTask(Task task){
+        users.remove(task);
+    }
+
 
     @Override
     public final boolean equals(Object o) {

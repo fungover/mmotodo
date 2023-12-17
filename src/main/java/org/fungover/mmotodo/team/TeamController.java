@@ -47,6 +47,12 @@ public class TeamController {
     }
 
     @MutationMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void  addTaskToTeam(@Valid @Argument int teamId, @Argument int userId) {
+        teamService.addTaskToTeam(teamId,userId);
+    }
+
+    @MutationMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteTeam(@Argument int id) {
         teamService.deleteTeam(id);
@@ -59,6 +65,14 @@ public class TeamController {
         teamService.removeUserFromTeam(teamId,userId);
         return "user successfully removed from team";
     }
+
+    @MutationMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String removeTaskFromTeam (@Argument int teamId, int taskId) {
+        teamService.removeTaskFromTeam(teamId,taskId);
+        return "user successfully removed from team";
+    }
+
 
 
     @MutationMapping()

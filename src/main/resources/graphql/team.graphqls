@@ -13,22 +13,23 @@ extend type Mutation {
     createTeam(team: TeamCreate!): Team!
     updateTeam( input: TeamUpdate!): Team!
     addUserToTeam(teamId: ID!, userId: ID!): Team!
+    addTaskToTeam(teamId: ID!, taskId: ID!): Team!
     removeUserFromTeam(teamId: ID!, userId: ID!): String!
+    removeTaskFromTeam(teamId: ID!, taskId: ID!): String!
     deleteTeam(id:ID!):String
+
 
 }
 
 
 input TeamCreate {
     name: String!
-    users:[ID]!
-    tasks:[ID]!
+
 }
 input TeamUpdate {
     id: Int
     name: String!
-    users:[ID]!
-    tasks:[ID]!
+
 
 }
 

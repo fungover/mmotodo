@@ -16,7 +16,13 @@
     <description>mmotodo</description>
     <properties>
         <java.version>21</java.version>
+
+            <flyway.url>jdbc:mysql://localhost:3306/mmotodo</flyway.url>
+            <flyway.user>root</flyway.user>
+            <flyway.password>root</flyway.password>
+
     </properties>
+
 
     <dependencies>
         <dependency>

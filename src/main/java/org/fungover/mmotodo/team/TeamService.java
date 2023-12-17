@@ -3,6 +3,7 @@ package org.fungover.mmotodo.team;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.fungover.mmotodo.exception.TaskNotFoundException;
 import org.fungover.mmotodo.exception.TeamNotFoundException;
 import org.fungover.mmotodo.task.Task;
 import org.fungover.mmotodo.task.TaskRepository;
@@ -51,21 +52,8 @@ public class TeamService {
 
             Team team = new Team();
             team.setName(teamCreate.name());
-
-            if(teamCreate.users()!=null){
-                List<User> users = userRepository.findAllById(teamCreate.users());
-                System.out.println("users: " + users);
-                team.setUsers(users);
-            }
-
-
-           if(teamCreate.tasks()!=null){
-               List<Task> tasks = taskRepository.findAllById(teamCreate.tasks());
-               System.out.println("tasks: " + tasks);
-               team.setTasks(tasks);
-           }
-
-            System.out.println("team" + team);
+            team.setUsers(new ArrayList<>());
+            team.setTasks(new ArrayList<>());
             return teamRepository.save(team);
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,15 +65,6 @@ public class TeamService {
    public Team updateTeam ( @Valid TeamDto teamUpdate){
         Team team = teamRepository.findById(teamUpdate.id()).orElseThrow(() -> new TeamNotFoundException("Team not found"));
         team.setName(teamUpdate.name());
-       if(teamUpdate.users()!=null){
-           List<User> users = userRepository.findAllById(teamUpdate.users());
-           team.setUsers(users);
-       }
-       if(teamUpdate.tasks()!=null){
-           List<Task> tasks = taskRepository.findAllById(teamUpdate.tasks());
-           team.setTasks(tasks);
-       }
-
          return teamRepository.save(team);
 
     }
@@ -94,7 +73,7 @@ public class TeamService {
     public void addUserToTeam(int teamId, int userId) {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new TeamNotFoundException("Team not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new TeamNotFoundException("Team not found"));
-        team.getUsers().add(user);
+        team.addUser(user);
         teamRepository.save(team);
     }
 
@@ -102,8 +81,27 @@ public class TeamService {
     public void removeUserFromTeam(int teamId, int userId) {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new TeamNotFoundException("Team  not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with ID " + userId + " not found"));
-        team.getUsers().remove(user);
+        team.removeUser(user);
         teamRepository.save(team);
     }
+
+    @Transactional
+    public void addTaskToTeam(int teamId, int taskId) {
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new TeamNotFoundException("Team not found"));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("Task not found"));
+        team.addTask(task);
+        teamRepository.save(team);
+    }
+
+    @Transactional
+    public void removeTaskFromTeam(int teamId, int taskId) {
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new TeamNotFoundException("Team  not found"));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("Task not found"));
+        team.removeTask(task);
+        teamRepository.save(team);
+    }
+
+
 }
+
 
