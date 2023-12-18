@@ -39,11 +39,11 @@ public class Team {
     @UpdateTimestamp
     private LocalDateTime updated;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id")
     private List<User> users;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id")
     private List<Task> tasks;
 
@@ -61,6 +61,7 @@ public class Team {
     public void removeTask(Task task){
         users.remove(task);
     }
+
 
 
     @Override

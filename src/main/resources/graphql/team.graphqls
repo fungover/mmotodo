@@ -11,11 +11,11 @@ extend type Query {
 
 extend type Mutation {
     createTeam(team: TeamCreate!): Team!
-    updateTeam( input: TeamUpdate!): Team!
-    addUserToTeam(teamId: ID!, userId: ID!): Team!
-    addTaskToTeam(teamId: ID!, taskId: ID!): Team!
+    updateTeam( team: TeamUpdate!): Team!
+    addUserToTeam(teamId: ID!, userId: ID!):String!
+    addTaskToTeam(teamId: ID!, taskId: ID!): String!
     removeUserFromTeam(teamId: ID!, userId: ID!): String!
-    removeTaskFromTeam(teamId: ID!, taskId: ID!): String!
+    removeTaskFromTeam(teamId: ID!, taskId: ID!):String!
     deleteTeam(id:ID!):String
 
 
