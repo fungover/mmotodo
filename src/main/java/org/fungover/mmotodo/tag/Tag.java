@@ -1,24 +1,22 @@
-package org.fungover.mmotodo.entities.team;
+package org.fungover.mmotodo.tag;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.fungover.mmotodo.entities.user.User;
-import org.fungover.mmotodo.entities.task.Task;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "team")
-public class Team {
+@Table(name = "tag")
+public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -29,21 +27,17 @@ public class Team {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Size(max = 255)
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "created")
     @CreationTimestamp
-    private Instant created;
+    private LocalDateTime created;
 
     @Column(name = "updated")
     @UpdateTimestamp
-    private Instant updated;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users")
-    private User users;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tasks")
-    private Task tasks;
+    private LocalDateTime updated;
 
     @Override
     public final boolean equals(Object o) {
@@ -52,8 +46,8 @@ public class Team {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Team team = (Team) o;
-        return getId() != null && Objects.equals(getId(), team.getId());
+        Tag tag = (Tag) o;
+        return getId() != null && Objects.equals(getId(), tag.getId());
     }
 
     @Override
