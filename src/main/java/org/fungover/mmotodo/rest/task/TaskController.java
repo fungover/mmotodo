@@ -1,6 +1,7 @@
 package org.fungover.mmotodo.rest.task;
 
-import org.fungover.mmotodo.entities.task.Task;
+import org.fungover.mmotodo.task.Task;
+import org.fungover.mmotodo.task.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
