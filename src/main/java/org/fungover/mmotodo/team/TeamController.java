@@ -35,51 +35,43 @@ public class TeamController {
 
 
     @MutationMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public Team createTeam(@Valid @Argument TeamDto team) {
         return teamService.createTeam(team);
     }
 
     @MutationMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public String addUserToTeam(@Valid @Argument int teamId, @Argument int userId) {
-        teamService.addUserToTeam(teamId,userId);
+        teamService.addUserToTeam(teamId, userId);
         return "user successfully added";
     }
 
     @MutationMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public String  addTaskToTeam(@Valid @Argument int teamId, @Argument int taskId) {
-        teamService.addTaskToTeam(teamId,taskId);
-        return "task added successfully to team" ;
+    public String addTaskToTeam(@Valid @Argument int teamId, @Argument int taskId) {
+        teamService.addTaskToTeam(teamId, taskId);
+        return "task added successfully to team";
     }
 
     @MutationMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteTeam(@Argument int id) {
         teamService.deleteTeam(id);
         return "team successfully deleted";
     }
 
     @MutationMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public String removeUserFromTeam(@Argument int teamId, @Argument int userId) {
-        teamService.removeUserFromTeam(teamId,userId);
+        teamService.removeUserFromTeam(teamId, userId);
         return "user successfully removed from team";
     }
 
     @MutationMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String removeTaskFromTeam (@Argument int teamId, @Argument int taskId) {
-        teamService.removeTaskFromTeam(teamId,taskId);
+    public String removeTaskFromTeam(@Argument int teamId, @Argument int taskId) {
+        teamService.removeTaskFromTeam(teamId, taskId);
         return "Task successfully removed from team";
     }
 
 
-
     @MutationMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public Team updateTeam(@Argument @Valid TeamDto team){
+    public Team updateTeam(@Argument @Valid TeamDto team) {
         return teamService.updateTeam(team);
     }
 }

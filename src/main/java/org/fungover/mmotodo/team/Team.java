@@ -39,29 +39,29 @@ public class Team {
     @UpdateTimestamp
     private LocalDateTime updated;
 
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id")
     private List<User> users;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id")
     private List<Task> tasks;
 
-    public void addUser(User user){
+    public void addUser(User user) {
         users.add(user);
     }
 
-    public void removeUser(User user){
+    public void removeUser(User user) {
         users.remove(user);
     }
 
-    public void addTask(Task task){
-       tasks.add(task);
-    }
-    public void removeTask(Task task){
-        users.remove(task);
+    public void addTask(Task task) {
+        tasks.add(task);
     }
 
+    public void removeTask(Task task) {
+        users.remove(task);
+    }
 
 
     @Override

@@ -53,7 +53,6 @@ public class User {
     private Task tasks;
 
 
-
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

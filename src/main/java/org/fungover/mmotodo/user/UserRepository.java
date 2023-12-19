@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    List<User> findAllByIdIn(List<Integer> userIds);
+
 }
