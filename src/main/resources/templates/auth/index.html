@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>LoginPage</title>
+    <title>Login Page</title>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width"/>
     <style>
@@ -15,23 +15,26 @@
             margin: 0;
         }
 
-        .container {
+        .main-container {
             text-align: center;
         }
-        img{
+
+        p {
+            font-size: 2rem;
+        }
+
+        img {
             width: 100px;
             height: 100px;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="container unauthenticated">
-        <h1>Sign in </h1>
-        <a href="/oauth2/authorization/github">
-        <img src="https://github.com/fluidicon.png" alt="GitHub Logo">
+<main class="main-container">
+    <p>Sign in using your GitHub account:</p>
+    <a href="/oauth2/authorization/github">
+        <img src="/images/github_logo.svg" alt="GitHub Logo">
     </a>
-    </div>
-</div>
+</main>
 </body>
 </html>

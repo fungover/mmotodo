@@ -42,7 +42,7 @@ public class AuthService {
     private String clientSecret;
 
     @Value("${github.api.logout.url}")
-    private String githubDeleteUrl;
+    private String githubSignOutUrl;
 
     private final OAuth2AuthorizedClientService authorizedClientService;
 
@@ -55,37 +55,43 @@ public class AuthService {
 
     public GithubUser getUserData(@AuthenticationPrincipal OAuth2User principal) {
         Map<String, Object> attributes = principal.getAttributes();
-        String userName = attributes.get("login").toString();
-        String name = attributes.get("name").toString();
-        int id = (int) attributes.get("id");
-        String avatarUrl = attributes.get("avatar_url").toString();
-        String githubProfileUrl = attributes.get("html_url").toString();
-        String email = attributes.get("email") != null ? attributes.get("email").toString() : null;
-        String createdAt = attributes.get("created_at").toString();
-        String updatedAt = attributes.get("updated_at").toString();
 
+        String userName = getAttribute(attributes, "login", String.class);
+        String name = getAttribute(attributes, "name", String.class);
+        Integer id = getAttribute(attributes, "id", Integer.class);
+        String avatarUrl = getAttribute(attributes, "avatar_url", String.class);
+        String githubProfileUrl = getAttribute(attributes, "html_url", String.class);
+        String email = getAttribute(attributes, "email", String.class);
+        String createdAt = getAttribute(attributes, "created_at", String.class);
+        String updatedAt = getAttribute(attributes, "updated_at", String.class);
 
         return new GithubUser(userName, name, id, avatarUrl, githubProfileUrl, email, createdAt, updatedAt);
+    }
 
+    // Method used to get the attributes from the OAuth object and checks correct type
+    private <T> T getAttribute(Map<String, Object> attributeObj, String name, Class<T> type) {
+        Object attribute = attributeObj.get(name);
+
+        if (attribute != null && type.isInstance(attribute)) {
+            return type.cast(attribute);
+        } else {
+            logger.warn("Invalid or missing attribute '{}': {}", name, attribute);
+            return null;
+        }
     }
 
 
     public boolean performLogout() {
         String accessTokenValue = retrieveAccessToken();
-
         if (accessTokenValue != null) {
-            String basicAuth = Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", "Basic " + basicAuth);
-            headers.setContentType(MediaType.APPLICATION_JSON);
-
+            HttpHeaders headers = createAuthHeader();
             String jsonBody = "{\"access_token\":\"" + accessTokenValue + "\"}";
             HttpEntity<String> request = new HttpEntity<>(jsonBody, headers);
 
             // Send request to sign out from OAuth application
             try {
                 new RestTemplate().exchange(
-                        githubDeleteUrl,
+                        githubSignOutUrl,
                         HttpMethod.DELETE,
                         request,
                         String.class
@@ -104,6 +110,13 @@ public class AuthService {
         }
 
         return false;
+    }
+
+    private HttpHeaders createAuthHeader() {
+        String basicAuth = Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Basic " + basicAuth);
+        return headers;
     }
 
 
@@ -137,15 +150,19 @@ public class AuthService {
         HttpServletRequest req = attributes.getRequest();
         HttpServletResponse res = attributes.getResponse();
 
-        Cookie[] cookies = req.getCookies();
+        if (req != null && res != null) {
+            Cookie[] cookies = req.getCookies();
 
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("JSESSIONID")) {
-                cookie.setMaxAge(0);
-                cookie.setPath("/");
-                assert res != null;
-                res.addCookie(cookie);
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("JSESSIONID")) {
+                        cookie.setMaxAge(0);
+                        cookie.setPath("/");
+                        res.addCookie(cookie);
+                    }
+                }
             }
         }
     }
+
 }

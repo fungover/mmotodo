@@ -27,7 +27,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/auth/logout", "/api/user", githubSignOutUrl).authenticated()
                         .requestMatchers(HttpMethod.GET, "/login").permitAll()
-                        .anyRequest().denyAll()
+                        .requestMatchers("/images/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .oauth2Login(login -> login
                         .loginPage("/login")
