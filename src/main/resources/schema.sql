@@ -49,6 +49,11 @@ CREATE TABLE user (
                       created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                       updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                       tasks int NOT NULL,
+                      github_id INT NOT NULL,
+                      github_username VARCHAR(255) NOT NULL,
+                      avatar_url VARCHAR(255) NOT NULL,
+                      github_profile_url VARCHAR(255) NOT NULL,
+                      github_email VARCHAR(255) DEFAULT NULL,
                       FOREIGN KEY (tasks) REFERENCES task(id)
 );
 

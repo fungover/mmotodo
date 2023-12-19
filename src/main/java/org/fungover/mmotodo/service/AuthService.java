@@ -5,6 +5,10 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.fungover.mmotodo.dto.GithubUser;
+
+import org.fungover.mmotodo.task.Task;
+import org.fungover.mmotodo.user.User;
+import org.fungover.mmotodo.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,9 +51,11 @@ public class AuthService {
     private final OAuth2AuthorizedClientService authorizedClientService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
+    private UserRepository userInfoRepository;
 
-    public AuthService(OAuth2AuthorizedClientService authorizedClientService) {
+    public AuthService(OAuth2AuthorizedClientService authorizedClientService, UserRepository userInfoRepository) {
         this.authorizedClientService = authorizedClientService;
+        this.userInfoRepository = userInfoRepository;
     }
 
 
@@ -165,4 +171,19 @@ public class AuthService {
         }
     }
 
+    public void updateUser(GithubUser githubUser) {
+        var user = userInfoRepository.findByGithubId(githubUser.id());
+        if (user == null) {
+            logger.info("New user detected, {}, {}", githubUser.id(), githubUser.userName());
+            user = new User();
+        }
+
+        user.setGithubId(githubUser.id());
+        user.setGithubUsername(githubUser.userName());
+        user.setGithubProfileUrl(githubUser.githubProfile());
+        user.setAvatarUrl(githubUser.avatarUrl());
+        user.setGithubEmail(githubUser.email());
+
+        userInfoRepository.save(user);
+    }
 }

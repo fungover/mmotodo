@@ -47,6 +47,29 @@ public class User {
     private LocalDateTime updated;
 
     @NotNull
+    @Column(name = "github_id")
+    private Integer githubId;
+
+    @NotNull
+    @Size(max = 255)
+    @Column(name = "github_username")
+    private String githubUsername;
+
+    @NotNull
+    @Size(max = 255)
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
+    @NotNull
+    @Size(max = 255)
+    @Column(name = "github_profile_url")
+    private String githubProfileUrl;
+
+    @Size(max = 255)
+    @Column(name = "github_email")
+    private String githubEmail;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tasks", nullable = false)
     private Task tasks;
