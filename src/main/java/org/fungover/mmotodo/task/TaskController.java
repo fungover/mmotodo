@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -41,13 +39,11 @@ public class TaskController {
     }
 
     @MutationMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public Task addTask(@Valid @Argument TaskCreateDto task) {
         return taskService.addTask(task);
     }
 
     @MutationMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteTask(@Argument int id) {
         if(taskService.deleteTask(id)) {
             return "Task with id: " + id + " is deleted";
@@ -56,7 +52,6 @@ public class TaskController {
     }
 
     @MutationMapping()
-    @ResponseStatus(HttpStatus.CREATED)
     public Task updateTask(@Argument @Valid TaskUpdateDto task){
         return taskService.updateTask(task);
     }
