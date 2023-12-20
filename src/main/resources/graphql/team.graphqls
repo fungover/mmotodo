@@ -1,8 +1,6 @@
-
 extend type Query {
     allTeams: [Team!]!
     teamById(id: ID): Team
-
 
 }
 

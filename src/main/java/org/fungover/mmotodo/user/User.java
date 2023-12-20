@@ -12,6 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -41,11 +42,11 @@ public class User {
 
     @Column(name = "created")
     @CreationTimestamp
-    private Instant created;
+    private LocalDateTime created;
 
     @Column(name = "updated")
     @UpdateTimestamp
-    private Instant updated;
+    private LocalDateTime updated;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
