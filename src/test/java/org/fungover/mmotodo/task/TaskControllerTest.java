@@ -15,7 +15,7 @@ import org.springframework.graphql.test.tester.GraphQlTester;
 import java.util.ArrayList;
 import java.util.List;
 
-@GraphQlTest
+@GraphQlTest(TaskController.class)
 @Import(value = {GraphQlConfig.class})
 class TaskControllerTest {
 
