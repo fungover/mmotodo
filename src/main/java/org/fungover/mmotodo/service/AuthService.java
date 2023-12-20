@@ -33,6 +33,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Map;
 
@@ -62,16 +64,19 @@ public class AuthService {
     public GithubUser getUserData(@AuthenticationPrincipal OAuth2User principal) {
         Map<String, Object> attributes = principal.getAttributes();
 
+        System.out.println(attributes);
+
         String userName = getAttribute(attributes, "login", String.class);
         String name = getAttribute(attributes, "name", String.class);
         Integer id = getAttribute(attributes, "id", Integer.class);
+        String role = getAttribute(attributes, "type", String.class);
         String avatarUrl = getAttribute(attributes, "avatar_url", String.class);
         String githubProfileUrl = getAttribute(attributes, "html_url", String.class);
         String email = getAttribute(attributes, "email", String.class);
         String createdAt = getAttribute(attributes, "created_at", String.class);
         String updatedAt = getAttribute(attributes, "updated_at", String.class);
 
-        return new GithubUser(userName, name, id, avatarUrl, githubProfileUrl, email, createdAt, updatedAt);
+        return new GithubUser(userName, name, id, role, avatarUrl, githubProfileUrl, email, createdAt, updatedAt);
     }
 
     // Method used to get the attributes from the OAuth object and checks correct type
@@ -178,6 +183,14 @@ public class AuthService {
             user = new User();
         }
 
+        String[] nameIndex = githubUser.name().trim().split("\\s+", 2);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+        user.setFirstName(nameIndex[0]);
+        user.setLastName(nameIndex[1]);
+        user.setCreated(LocalDateTime.parse(githubUser.createdAt(), formatter));
+        user.setUpdated(LocalDateTime.parse(githubUser.updatedAt(), formatter));
+        user.setRole(githubUser.role());
         user.setGithubId(githubUser.id());
         user.setGithubUsername(githubUser.userName());
         user.setGithubProfileUrl(githubUser.githubProfile());
