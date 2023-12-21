@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -23,15 +24,12 @@ public class AuthRestController {
     private AuthService authService;
     private static final Logger logger = LoggerFactory.getLogger(AuthRestController.class);
 
-
     @Autowired
     public AuthRestController(AuthService authService) {
         this.authService = authService;
     }
 
-
-    /*Data that can access in our frontend*/
-    @RequestMapping(value = "/api/user", method = {RequestMethod.GET, RequestMethod.POST})
+    @GetMapping("/api/user")
     public ResponseEntity<Object> getUserData(@AuthenticationPrincipal OAuth2User principal) {
         try {
             Optional<GithubUser> githubUser = Optional.ofNullable(authService.getUserData(principal));
@@ -45,4 +43,9 @@ public class AuthRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving data");
         }
     }
+    @GetMapping("/csrf")
+    public CsrfToken csrf(CsrfToken csrfToken) {
+        return csrfToken;
+    }
 }
+

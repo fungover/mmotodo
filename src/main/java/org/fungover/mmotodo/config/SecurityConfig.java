@@ -32,7 +32,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/auth/logout", "/api/user", githubSignOutUrl).authenticated()
                         .requestMatchers(HttpMethod.GET, "/login", "/images/**").permitAll()
                         .requestMatchers("/csrf").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/user").authenticated()
                         .requestMatchers(HttpMethod.POST, "/logout").authenticated()
                         .anyRequest().authenticated()
                 )

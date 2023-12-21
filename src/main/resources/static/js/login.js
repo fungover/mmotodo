@@ -25,14 +25,13 @@ const csrf = async function (func = null) {
 const userdata = async function () {
     try {
         await csrf();
-        const res = await fetch('/api/user', {...config, method: "POST"});
-        // Authenticated
+        const res = await fetch('/api/user', config);
+
         if (res.ok) {
             const data = await res.json();
             document.querySelector('#username').textContent = data.name;
             document.querySelector('.unauthenticated').style.display = 'none';
             document.querySelector('.authenticated').style.display = 'block';
-            // Unauthenticated
         } else if (res.status === 401) {
             document.querySelector('#username').textContent = '';
             document.querySelector('.unauthenticated').style.display = 'block';
@@ -44,19 +43,18 @@ const userdata = async function () {
         console.error('Error fetching user data:', error);
     }
 };
-
 csrf(userdata);
 
 const logout = async function () {
     try {
-        const response = await fetch('/logout', {...config, method: "POST"});
+        const res = await fetch('/logout', {...config, method: "POST"});
 
-        if (response.ok) {
+        if (res.ok) {
             document.querySelector('.authenticated').style.display = 'none';
             document.querySelector('.unauthenticated').style.display = 'block';
             await csrf();
         } else {
-            console.error('Logout failed:', response.statusText);
+            console.error('Logout failed:', res.statusText);
         }
     } catch (error) {
         console.error('Error during logout:', error);

@@ -42,10 +42,4 @@ public class AuthController {
 
         return "auth/logout_status";
     }
-
-    @GetMapping("/csrf")
-    @ResponseBody
-    public CsrfToken csrf(CsrfToken csrfToken) {
-        return csrfToken;
-    }
 }
