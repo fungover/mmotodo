@@ -63,10 +63,10 @@ const logout = async function () {
     }
 };
 
-document.getElementById('logout-button').addEventListener('click', async function () {
-    try {
-        await logout();
-    } catch (error) {
+// Using a then callback function to not return a promise
+document.getElementById('logout-button').addEventListener('click', function () {
+    logout().then(() => {
+    }).catch(error => {
         console.error('Logout failed:', error);
-    }
+    });
 });
