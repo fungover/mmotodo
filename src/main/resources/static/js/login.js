@@ -1,10 +1,10 @@
-let config  = {
+let config = {
     headers: {
         'X-CSRF-TOKEN': '',
     }
 }
 
-const csrf = async function (func = null) {
+const csrf = async function (func) {
     try {
         const res = await fetch("/csrf");
         if (!res.ok) {
@@ -55,10 +55,18 @@ const logout = async function () {
             await csrf();
         } else {
             console.error('Logout failed:', res.statusText);
+            throw new Error('Logout failed');
         }
     } catch (error) {
         console.error('Error during logout:', error);
+        throw error;
     }
 };
 
-document.getElementById('logout-button').addEventListener('click', logout);
+document.getElementById('logout-button').addEventListener('click', async function () {
+    try {
+        await logout();
+    } catch (error) {
+        console.error('Logout failed:', error);
+    }
+});
