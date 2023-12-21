@@ -11,17 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 import org.slf4j.Logger;
 
 @RestController
-@RequestMapping()
 public class AuthRestController {
 
     private AuthService authService;
@@ -35,7 +31,7 @@ public class AuthRestController {
 
 
     /*Data that can access in our frontend*/
-    @GetMapping("/api/user")
+    @RequestMapping(value = "/api/user", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity<Object> getUserData(@AuthenticationPrincipal OAuth2User principal) {
         try {
             Optional<GithubUser> githubUser = Optional.ofNullable(authService.getUserData(principal));

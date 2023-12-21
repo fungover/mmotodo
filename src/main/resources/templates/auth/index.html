@@ -22,7 +22,8 @@
         p {
             font-size: 2rem;
         }
-        a{
+
+        a {
             color: black;
         }
 
@@ -30,18 +31,38 @@
             width: 100px;
             height: 100px;
         }
+        .authenticated{
+            display: none;
+        }
+        button{
+            padding: 1rem 3rem;
+            background-color: #14011C;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1rem;
+            border-radius: 0.5rem;
+        }
     </style>
 </head>
 <body>
 <main class="main-container">
-    <p>Sign in using your GitHub account
+    <div class="unauthenticated">
+        <p>Sign in using your GitHub account
+            <a href="/oauth2/authorization/github">
+                here
+            </a>
+        </p>
         <a href="/oauth2/authorization/github">
-            here
+            <img src="/images/github_logo.svg" alt="GitHub Logo">
         </a>
-    </p>
-    <a href="/oauth2/authorization/github">
-        <img src="/images/github_logo.svg" alt="GitHub Logo">
-    </a>
+    </div>
+    <div class="authenticated">
+        <p>Welcome <span id="username"></span>! <br>You are already signed in</p>
+        <button id="logout-button">Logout</button>
+    </div>
+
 </main>
+<script src="/js/login.js"></script></script>
 </body>
 </html>
