@@ -13,7 +13,7 @@ public class TaskListener {
     }
 
     @EventListener
-    void handleTaskCreatedEvent(TaskEvent event) {
+    void handleTaskEvent(TaskEvent event) {
         taskSink.tryEmitNext(event);
     }
 }
