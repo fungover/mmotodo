@@ -1,5 +1,7 @@
 package org.fungover.mmotodo;
 
+import org.fungover.mmotodo.category.Category;
+import org.fungover.mmotodo.category.CategoryRepository;
 import org.fungover.mmotodo.tag.Tag;
 import org.fungover.mmotodo.tag.TagRepository;
 import org.springframework.boot.ApplicationArguments;
@@ -10,9 +12,11 @@ import org.springframework.stereotype.Component;
 public class DatabaseInitializer implements ApplicationRunner {
 
     private final TagRepository tagRepository;
+    private final CategoryRepository categoryRepository;
 
-    public DatabaseInitializer(TagRepository tagRepository) {
+    public DatabaseInitializer(TagRepository tagRepository, CategoryRepository categoryRepository) {
         this.tagRepository = tagRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -38,6 +42,14 @@ public class DatabaseInitializer implements ApplicationRunner {
             tagRepository.save(tag2);
             tagRepository.save(tag3);
             tagRepository.save(tag4);
+        }
+
+        if (categoryRepository.count() == 0) {
+            Category category1 = new Category();
+            category1.setName("Example");
+            category1.setDescription("This is an example category");
+
+            categoryRepository.save(category1);
         }
     }
 }
