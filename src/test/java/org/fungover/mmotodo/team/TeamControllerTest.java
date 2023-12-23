@@ -151,6 +151,18 @@ public class TeamControllerTest {
 
     }
 
+    @Test
+    void shouldDeleteTeam() throws Exception{
+        Mockito.when(teamService.deleteTeam(1)).thenReturn("Team with id 1 deleted");
+
+        String query = "mutation { deleteTeam(id: 1) }";
+        String expected = objectMapper.writeValueAsString("Team with id 1 deleted");
+        graphQlTester.document(query)
+                .execute()
+                .path("deleteTeam")
+                .matchesJson(expected);
+
+    }
     private Team createTeam(String name) {
         Team team = new Team();
         team.setId(1);

@@ -54,7 +54,7 @@ public class TeamController {
     @MutationMapping
     public String deleteTeam(@Argument int id) {
         teamService.deleteTeam(id);
-        return "team successfully deleted";
+        return "Team with id " + id + " deleted";
     }
 
     @MutationMapping
