@@ -71,7 +71,7 @@ public class TeamController {
 
 
     @MutationMapping()
-    public Team updateTeam(@Argument @Valid TeamDto team) {
+    public Team updateTeam(@Argument @Valid TeamUpdateDto team) {
         return teamService.updateTeam(team);
     }
 }

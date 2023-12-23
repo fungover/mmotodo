@@ -61,7 +61,7 @@ public class TeamService {
     }
 
     @Transactional
-    public Team updateTeam(TeamDto teamUpdate) {
+    public Team updateTeam(TeamUpdateDto teamUpdate) {
 
         Team team = teamRepository.findById(teamUpdate.id()).orElseThrow(() -> new TeamNotFoundException("Team not found"));
         team.setName(teamUpdate.name());

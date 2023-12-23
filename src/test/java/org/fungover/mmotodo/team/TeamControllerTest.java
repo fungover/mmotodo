@@ -2,7 +2,6 @@ package org.fungover.mmotodo.team;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.fungover.mmotodo.task.GraphQlConfig;
-import org.fungover.mmotodo.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,8 +12,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.graphql.test.tester.GraphQlTester;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @GraphQlTest(TeamController.class)
@@ -75,16 +72,35 @@ public class TeamControllerTest {
 
     @Test
     void shouldAddNewTeam() throws Exception {
-
-        TeamDto teamDto = new TeamDto(1, "developer team");
+        TeamDto teamDto = new TeamDto("developer team");
         Team team = new Team();
-        team.setId(teamDto.id());
         team.setName(teamDto.name());
         Mockito.when(teamService.createTeam(teamDto)).thenReturn(team);
-        String mutation = "mutation { createTeam(team: { name: \"developer team\" }) { id name  } }";
-        System.out.println("mutation: " +  teamDto);
+        String mutation = "mutation {\n" +
+                "  createTeam(team: {\n" +
+                "    name: \"developer team\"\n" +
+                "  }) {\n" +
+                "    id\n" +
+                "    name\n" +
+                "    created\n" +
+                "    updated\n" +
+                "    users {\n" +
+                "      id\n" +
+                "      firstName\n" +
+                "      lastName\n" +
+                "      role\n" +
+                "      created\n" +
+                "      updated\n" +
+                "    }\n" +
+                "    tasks {\n" +
+                "      id\n" +
+                "      title\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+
         String expected = objectMapper.writeValueAsString(team);
-        System.out.println("team: " + expected);
+        System.out.println("Expected: " + expected);
         graphQlTester.document(mutation)
                 .execute()
                 .path("createTeam")
@@ -92,24 +108,73 @@ public class TeamControllerTest {
     }
 
     @Test
-    void shouldAddNewUserToTeam() throws Exception{
+    void shouldUpdateANewTeam() throws Exception {
+        // Create a TeamUpdateDto with an id and updated name
+        TeamUpdateDto teamDto = new TeamUpdateDto(1, "update team");
 
-        Mockito.when(teamService.addUserToTeam(1,1))
+        // Create a Team with the same id and updated name
+        Team team = new Team();
+        team.setId(teamDto.id());
+        team.setName(teamDto.name());
+        // Ensure other fields are properly set during the update
+
+        // Mock the service response
+        Mockito.when(teamService.updateTeam(teamDto)).thenReturn(team);
+
+        // GraphQL mutation
+        String mutation = "mutation {\n" +
+                "  updateTeam(team: {\n" +
+                "    id: 1,\n" +
+                "    name: \"update team\"\n" +
+                "  }) {\n" +
+                "    id\n" +
+                "    name\n" +
+                "    created\n" +
+                "    updated\n" +
+                "    users {\n" +
+                "      id\n" +
+                "      firstName\n" +
+                "      lastName\n" +
+                "      role\n" +
+                "      created\n" +
+                "      updated\n" +
+                "    }\n" +
+                "    tasks {\n" +
+                "      id\n" +
+                "      title\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+
+        String expected = objectMapper.writeValueAsString(team);
+        System.out.println("Expected: " + expected);
+
+        graphQlTester.document(mutation)
+                .execute()
+                .path("updateTeam")
+                .matchesJson(expected);
+    }
+
+
+    @Test
+    void shouldAddNewUserToTeam() throws Exception {
+
+        Mockito.when(teamService.addUserToTeam(1, 1))
                 .thenReturn("user with id 1 successfully added to team");
 
         String query = "mutation { addUserToTeam(teamId: 1, userId: 1) }";
         String expected = objectMapper.writeValueAsString("user with id 1 successfully added to team");
-         graphQlTester.document(query)
+        graphQlTester.document(query)
                 .execute()
                 .path("addUserToTeam")
-                 .matchesJson(expected);
+                .matchesJson(expected);
 
     }
 
     @Test
-    void shouldAddNewTaskToTeam() throws Exception{
+    void shouldAddNewTaskToTeam() throws Exception {
 
-        Mockito.when(teamService.addTaskToTeam(1,1))
+        Mockito.when(teamService.addTaskToTeam(1, 1))
                 .thenReturn("task with id 1 successfully added to team");
 
         String query = "mutation { addTaskToTeam(teamId: 1, taskId: 1) }";
@@ -122,9 +187,9 @@ public class TeamControllerTest {
     }
 
     @Test
-    void shouldRemoveUserFromTeam() throws Exception{
+    void shouldRemoveUserFromTeam() throws Exception {
 
-        Mockito.when(teamService.removeUserFromTeam(1,1))
+        Mockito.when(teamService.removeUserFromTeam(1, 1))
                 .thenReturn("user with id 1 successfully removed from team");
 
         String query = "mutation { removeUserFromTeam(teamId: 1, userId: 1) }";
@@ -137,9 +202,9 @@ public class TeamControllerTest {
     }
 
     @Test
-    void shouldRemoveTaskToTeam() throws Exception{
+    void shouldRemoveTaskToTeam() throws Exception {
 
-        Mockito.when(teamService.removeTaskFromTeam(1,1))
+        Mockito.when(teamService.removeTaskFromTeam(1, 1))
                 .thenReturn("task with id 1 successfully removed from team");
 
         String query = "mutation { removeTaskFromTeam(teamId: 1, taskId: 1) }";
@@ -152,7 +217,7 @@ public class TeamControllerTest {
     }
 
     @Test
-    void shouldDeleteTeam() throws Exception{
+    void shouldDeleteTeam() throws Exception {
         Mockito.when(teamService.deleteTeam(1)).thenReturn("Team with id 1 deleted");
 
         String query = "mutation { deleteTeam(id: 1) }";
@@ -163,6 +228,7 @@ public class TeamControllerTest {
                 .matchesJson(expected);
 
     }
+
     private Team createTeam(String name) {
         Team team = new Team();
         team.setId(1);
