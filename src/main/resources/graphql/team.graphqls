@@ -33,8 +33,8 @@ input TeamUpdate {
 type Team {
     id: Int
     name: String!
-    users:[User!]!
-    tasks: [Task!]!
+    users:[User]
+    tasks: [Task]
     created: LocalDateTime
     updated: LocalDateTime
 }
