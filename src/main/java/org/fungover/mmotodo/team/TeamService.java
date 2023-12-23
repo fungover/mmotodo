@@ -70,7 +70,7 @@ public class TeamService {
     }
 
     @Transactional
-    public void addUserToTeam(int teamId, int userId) {
+    public String addUserToTeam(int teamId, int userId) {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new TeamNotFoundException("Team not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new TeamNotFoundException("Team not found"));
         if (team.getUsers().contains(user)) {
@@ -78,11 +78,12 @@ public class TeamService {
         }
         team.addUser(user);
         teamRepository.save(team);
+        return"user added";
 
     }
 
     @Transactional
-    public void removeUserFromTeam(int teamId, int userId) {
+    public String removeUserFromTeam(int teamId, int userId) {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new TeamNotFoundException("Team  not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with ID " + userId + " not found"));
         if (!team.getUsers().contains(user)) {
@@ -90,11 +91,12 @@ public class TeamService {
         }
         team.removeUser(user);
         teamRepository.save(team);
+        return "user removed";
 
     }
 
     @Transactional
-    public void addTaskToTeam(int teamId, int taskId) {
+    public String addTaskToTeam(int teamId, int taskId) {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new TeamNotFoundException("Team not found"));
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("Task not found"));
         if (team.getTasks().contains(task)) {
@@ -102,11 +104,12 @@ public class TeamService {
         }
         team.addTask(task);
         teamRepository.save(team);
+        return "task added";
 
     }
 
     @Transactional
-    public void removeTaskFromTeam(int teamId, int taskId) {
+    public String removeTaskFromTeam(int teamId, int taskId) {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new TeamNotFoundException("Team  not found"));
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("Task not found"));
         if (!team.getTasks().contains(task)) {
@@ -114,6 +117,7 @@ public class TeamService {
         }
         team.removeTask(task);
         teamRepository.save(team);
+        return "task removed";
 
 
     }

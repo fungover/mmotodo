@@ -42,13 +42,13 @@ public class TeamController {
     @MutationMapping
     public String addUserToTeam(@Valid @Argument int teamId, @Argument int userId) {
         teamService.addUserToTeam(teamId, userId);
-        return "user successfully added";
+        return "user with id " + userId + " successfully added to team";
     }
 
     @MutationMapping
     public String addTaskToTeam(@Valid @Argument int teamId, @Argument int taskId) {
         teamService.addTaskToTeam(teamId, taskId);
-        return "task added successfully to team";
+        return "task with id " + taskId + " successfully added to team";
     }
 
     @MutationMapping
@@ -60,13 +60,13 @@ public class TeamController {
     @MutationMapping
     public String removeUserFromTeam(@Argument int teamId, @Argument int userId) {
         teamService.removeUserFromTeam(teamId, userId);
-        return "user successfully removed from team";
+        return "user with id " + userId + " successfully removed from team";
     }
 
     @MutationMapping
     public String removeTaskFromTeam(@Argument int teamId, @Argument int taskId) {
         teamService.removeTaskFromTeam(teamId, taskId);
-        return "Task successfully removed from team";
+        return "task with id " + taskId + " successfully removed from team";
     }
 
 
