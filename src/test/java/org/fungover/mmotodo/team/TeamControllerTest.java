@@ -27,11 +27,9 @@ public class TeamControllerTest {
     private ObjectMapper objectMapper;
 
     private List<Team> teams;
-    private static int counter;
 
     @BeforeEach
     void setUp() {
-        counter = 1;
         teams = new ArrayList<>();
         teams.add(createTeam("Engineering Team"));
         teams.add(createTeam("Architectural Team"));
@@ -40,9 +38,7 @@ public class TeamControllerTest {
     @Test
     void shouldRespondWithAllTeamNames() throws Exception {
         Mockito.when(teamService.getAllTeams()).thenReturn(teams);
-
         String query = "query{allTeams{name}}";
-
         var expectedList = teams.stream().map(team -> new Object() {
             public final String name = team.getName();
 
@@ -62,7 +58,6 @@ public class TeamControllerTest {
         Mockito.when(teamService.getTeamById(1)).thenReturn(team);
         String query = "{ teamById(id: 1) { id name created updated users { id firstName lastName role created updated tasks { id title } } tasks { id title description created updated timeEstimation dueDate status  } }}";
 
-
         String expected = objectMapper.writeValueAsString(team);
         graphQlTester.document(query)
                 .execute()
@@ -72,7 +67,7 @@ public class TeamControllerTest {
 
     @Test
     void shouldAddNewTeam() throws Exception {
-        TeamDto teamDto = new TeamDto("developer team");
+        TeamCreateDto teamDto = new TeamCreateDto("developer team");
         Team team = new Team();
         team.setName(teamDto.name());
         Mockito.when(teamService.createTeam(teamDto)).thenReturn(team);
@@ -100,7 +95,6 @@ public class TeamControllerTest {
                 "}";
 
         String expected = objectMapper.writeValueAsString(team);
-        System.out.println("Expected: " + expected);
         graphQlTester.document(mutation)
                 .execute()
                 .path("createTeam")
@@ -173,7 +167,6 @@ public class TeamControllerTest {
 
     @Test
     void shouldAddNewTaskToTeam() throws Exception {
-
         Mockito.when(teamService.addTaskToTeam(1, 1))
                 .thenReturn("task with id 1 successfully added to team");
 
@@ -183,12 +176,10 @@ public class TeamControllerTest {
                 .execute()
                 .path("addTaskToTeam")
                 .matchesJson(expected);
-
     }
 
     @Test
     void shouldRemoveUserFromTeam() throws Exception {
-
         Mockito.when(teamService.removeUserFromTeam(1, 1))
                 .thenReturn("user with id 1 successfully removed from team");
 
@@ -198,12 +189,10 @@ public class TeamControllerTest {
                 .execute()
                 .path("removeUserFromTeam")
                 .matchesJson(expected);
-
     }
 
     @Test
     void shouldRemoveTaskToTeam() throws Exception {
-
         Mockito.when(teamService.removeTaskFromTeam(1, 1))
                 .thenReturn("task with id 1 successfully removed from team");
 
@@ -213,20 +202,17 @@ public class TeamControllerTest {
                 .execute()
                 .path("removeTaskFromTeam")
                 .matchesJson(expected);
-
     }
 
     @Test
     void shouldDeleteTeam() throws Exception {
         Mockito.when(teamService.deleteTeam(1)).thenReturn("Team with id 1 deleted");
-
         String query = "mutation { deleteTeam(id: 1) }";
         String expected = objectMapper.writeValueAsString("Team with id 1 deleted");
         graphQlTester.document(query)
                 .execute()
                 .path("deleteTeam")
                 .matchesJson(expected);
-
     }
 
     private Team createTeam(String name) {
@@ -235,6 +221,4 @@ public class TeamControllerTest {
         team.setName(name);
         return team;
     }
-
-
 }

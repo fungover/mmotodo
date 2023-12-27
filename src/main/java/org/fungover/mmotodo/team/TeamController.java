@@ -1,16 +1,11 @@
 package org.fungover.mmotodo.team;
 
 import jakarta.validation.Valid;
-import org.fungover.mmotodo.team.Team;
-import org.fungover.mmotodo.team.TeamDto;
-import org.fungover.mmotodo.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -33,9 +28,8 @@ public class TeamController {
         return teamService.getAllTeams();
     }
 
-
     @MutationMapping
-    public Team createTeam(@Valid @Argument TeamDto team) {
+    public Team createTeam(@Valid @Argument TeamCreateDto team) {
         return teamService.createTeam(team);
     }
 
@@ -46,7 +40,7 @@ public class TeamController {
     }
 
     @MutationMapping
-    public String addTaskToTeam(@Valid @Argument int teamId, @Argument int taskId) {
+    public String addTaskToTeam( @Argument int teamId, @Argument int taskId) {
         teamService.addTaskToTeam(teamId, taskId);
         return "task with id " + taskId + " successfully added to team";
     }
@@ -68,7 +62,6 @@ public class TeamController {
         teamService.removeTaskFromTeam(teamId, taskId);
         return "task with id " + taskId + " successfully removed from team";
     }
-
 
     @MutationMapping()
     public Team updateTeam(@Argument @Valid TeamUpdateDto team) {

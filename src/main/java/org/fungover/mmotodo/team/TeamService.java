@@ -10,16 +10,12 @@ import org.fungover.mmotodo.user.User;
 import org.fungover.mmotodo.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
-
 
 @Service
 public class TeamService {
     private final TeamRepository teamRepository;
-
     private final UserRepository userRepository;
-
     private final TaskRepository taskRepository;
 
     @Autowired
@@ -46,9 +42,8 @@ public class TeamService {
         return "Team with id:" + teamId + " deleted";
     }
 
-
     @Transactional
-    public Team createTeam(@Valid TeamDto teamCreate) {
+    public Team createTeam(@Valid TeamCreateDto teamCreate) {
         // Check if the team with the same name already exists
         if (teamRepository.existsByName(teamCreate.name())) {
             throw new RuntimeException("Team already exists");
@@ -66,7 +61,6 @@ public class TeamService {
         Team team = teamRepository.findById(teamUpdate.id()).orElseThrow(() -> new TeamNotFoundException("Team not found"));
         team.setName(teamUpdate.name());
         return teamRepository.save(team);
-
     }
 
     @Transactional
@@ -79,7 +73,6 @@ public class TeamService {
         team.addUser(user);
         teamRepository.save(team);
         return"user added";
-
     }
 
     @Transactional
@@ -92,7 +85,6 @@ public class TeamService {
         team.removeUser(user);
         teamRepository.save(team);
         return "user removed";
-
     }
 
     @Transactional
@@ -118,11 +110,7 @@ public class TeamService {
         team.removeTask(task);
         teamRepository.save(team);
         return "task removed";
-
-
     }
-
-
 }
 
 
