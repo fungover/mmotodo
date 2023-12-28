@@ -1,4 +1,3 @@
-// Inside your JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     const data = [
         { col1: '1', col2: 'Create design', col3: '2023-12-13 12:00', col4: 'We need a design that we can discuss around...', col5: '2', col6: 'Design, CoOp', col7: 'Done', user: 'Liber09' },
@@ -15,6 +14,36 @@ document.addEventListener('DOMContentLoaded', function() {
     const userList = document.getElementById('userList');
 
     function populateUserList() {
+        // Clear existing user list
+        userList.innerHTML = '';
+
+        // Add "All Users" option
+        var allUsersOption = document.createElement('li');
+        var allUsersAnchor = document.createElement('a');
+        allUsersAnchor.id = 'allUsersOption';
+        allUsersAnchor.classList.add('dropdown-item');
+        allUsersAnchor.textContent = 'All Users';
+        allUsersAnchor.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default navigation behavior
+            selectUser(null);
+        });
+        allUsersOption.appendChild(allUsersAnchor);
+        userList.appendChild(allUsersOption);
+
+        // Add "Unassigned" option
+        var unassignedOption = document.createElement('li');
+        var unassignedAnchor = document.createElement('a');
+        unassignedAnchor.id = 'unassignedOption';
+        unassignedAnchor.classList.add('dropdown-item');
+        unassignedAnchor.textContent = 'Unassigned';
+        unassignedAnchor.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default navigation behavior
+            selectUser('');
+        });
+        unassignedOption.appendChild(unassignedAnchor);
+        userList.appendChild(unassignedOption);
+
+        // Add user-specific options
         users.forEach(function(user) {
             var listItem = document.createElement('li');
             var anchor = document.createElement('a');
@@ -35,15 +64,17 @@ document.addEventListener('DOMContentLoaded', function() {
         tbody.innerHTML = '';
 
         // Filter tasks based on the selected user
-        const userTasks = selectedUser ? data.filter(task => task.user === selectedUser) : data;
+        const userTasks = selectedUser !== null
+            ? (selectedUser === '' ? data.filter(task => !task.user) : data.filter(task => task.user === selectedUser))
+            : data;
 
         if (userTasks.length === 0) {
             // If no tasks are assigned to the user, create a single row with a message
             const noTasksRow = document.createElement('tr');
             const noTasksCell = document.createElement('td');
             noTasksCell.colSpan = 7; // Set colSpan to match the number of columns
-            noTasksCell.textContent = selectedUser
-                ? `No tasks assigned for user '${selectedUser}'`
+            noTasksCell.textContent = selectedUser !== null
+                ? (selectedUser === '' ? 'No unassigned tasks' : `No tasks assigned for user '${selectedUser}'`)
                 : 'No tasks available';
             noTasksRow.appendChild(noTasksCell);
             tbody.appendChild(noTasksRow);
@@ -130,38 +161,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to filter tasks by selected user
     function selectUser(selectedUser) {
-        var filteredData;
-
-        if (selectedUser === null) {
-            // Show all tasks for all users
-            filteredData = data;
-        } else {
-            // Filter tasks based on the selected user
-            filteredData = data.filter(function (task) {
-                // Assuming user information is stored in the task data
-                return task.user === selectedUser;
-            });
-        }
+        var filteredData = data.filter(function (task) {
+            // Assuming user information is stored in the task data
+            return selectedUser !== null ? (selectedUser === '' ? !task.user : task.user === selectedUser) : true;
+        });
 
         populateTable(filteredData, selectedUser);
     }
-
 
     // Initial table population with all tasks
     populateTable(data);
 
     // Populate user list
     populateUserList();
+    selectUser(null);
 
     // Add click event listeners to table headers for sorting
     table.querySelectorAll('th').forEach(function(th, index) {
         th.addEventListener('click', function() {
             sortTable(index);
         });
-    });
-
-    // Optional: Add an event listener to show all tasks when "All Users" is selected
-    document.getElementById('allUsersOption').addEventListener('click', function() {
-        selectUser(null);
     });
 });
