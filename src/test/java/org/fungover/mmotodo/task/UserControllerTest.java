@@ -3,10 +3,7 @@ package org.fungover.mmotodo.task;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
-import org.fungover.mmotodo.user.User;
-import org.fungover.mmotodo.user.UserCreateDto;
-import org.fungover.mmotodo.user.UserDto;
-import org.fungover.mmotodo.user.UserService;
+import org.fungover.mmotodo.user.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -16,7 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.graphql.test.tester.GraphQlTester;
 
-@GraphQlTest
+@GraphQlTest(UserController.class)
 @Import(value = {GraphQlConfig.class})
 public class UserControllerTest {
 
