@@ -1,7 +1,6 @@
 package org.fungover.mmotodo.user;
 
 import jakarta.validation.Valid;
-import lombok.NoArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;

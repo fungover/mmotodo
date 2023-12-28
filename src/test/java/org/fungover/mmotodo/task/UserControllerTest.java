@@ -1,11 +1,8 @@
 package org.fungover.mmotodo.task;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
-import org.apache.tomcat.util.security.Escape;
-import org.fungover.mmotodo.exception.UserNotFoundException;
 import org.fungover.mmotodo.user.User;
 import org.fungover.mmotodo.user.UserCreateDto;
 import org.fungover.mmotodo.user.UserDto;
@@ -17,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.graphql.GraphQlResponse;
 import org.springframework.graphql.test.tester.GraphQlTester;
-
 
 @GraphQlTest
 @Import(value = {GraphQlConfig.class})
