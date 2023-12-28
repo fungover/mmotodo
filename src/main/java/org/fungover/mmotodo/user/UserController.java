@@ -32,5 +32,9 @@ public class UserController {
         return userService.updateUser(user);
     }
 
+    @MutationMapping
+    public String deleteUser(@Argument int id) {
+        return userService.deleteUser(id);
+    }
 
 }

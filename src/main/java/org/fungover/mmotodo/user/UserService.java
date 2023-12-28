@@ -42,4 +42,12 @@ public class UserService {
         return userRepository.save(updatedUser);
     }
 
+    @Transactional
+    public String deleteUser(int id) {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        userRepository.deleteById(user.getId());
+
+        return "User with id: " + id + " was successfully deleted";
+    }
+
 }
