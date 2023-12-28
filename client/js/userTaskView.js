@@ -1,45 +1,82 @@
+// Inside your JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     const data = [
-        { col1: '1', col2: 'Create design', col3: '2023-12-13 12:00', col4: 'We need a design that we can discuss around...', col5: '2', col6: 'Design, CoOp', col7: 'Done' },
-        { col1: '2', col2: 'Create first component', col3: '2023-12-18 12:00', col4: 'Create the first component used in the design', col5: '3', col6: 'Implement', col7: 'Ready for test' },
-        { col1: '3', col2: 'Create components', col3: '2023-12-18 12:00', col4: 'Create components used in the design', col5: '3', col6: 'Implement', col7: 'Code review' },
-        { col1: '4', col2: 'Apply design', col3: '2023-12-18 12:00', col4: 'Implement the design', col5: '3', col6: 'Design', col7: 'In progress' },
-        { col1: '5', col2: 'Load content', col3: '2023-12-20 12:00', col4: 'Load content', col5: '3', col6: 'Design', col7: 'Blocked' },
-        { col1: '6', col2: 'Deploy', col3: '2023-12-24 12:00', col4: 'Deploy everything', col5: '3', col6: 'Deploy', col7: 'ToDo' },
+        { col1: '1', col2: 'Create design', col3: '2023-12-13 12:00', col4: 'We need a design that we can discuss around...', col5: '2', col6: 'Design, CoOp', col7: 'Done', user: 'Liber09' },
+        { col1: '2', col2: 'Create first component', col3: '2023-12-18 12:00', col4: 'Create the first component used in the design', col5: '3', col6: 'Implement', col7: 'Ready for test', user: 'Liber09' },
+        { col1: '3', col2: 'Create components', col3: '2023-12-18 12:00', col4: 'Create components used in the design', col5: '3', col6: 'Implement', col7: 'Code review', user: 'User 1' },
+        { col1: '4', col2: 'Apply design', col3: '2023-12-18 12:00', col4: 'Implement the design', col5: '3', col6: 'Design', col7: 'In progress', user: 'User 2' },
+        { col1: '5', col2: 'Load content', col3: '2023-12-20 12:00', col4: 'Load content', col5: '3', col6: 'Design', col7: 'Blocked', user: 'Liber09' },
+        { col1: '6', col2: 'Deploy', col3: '2023-12-24 12:00', col4: 'Deploy everything', col5: '3', col6: 'Deploy', col7: 'ToDo', user: '' },
     ];
+    var users = ['Liber09', 'User 1', 'User 2', 'User 3'];
 
     const tbody = document.querySelector('tbody');
     const table = document.getElementById('tasksTable');
+    const userList = document.getElementById('userList');
 
-    function populateTable(data) {
+    function populateUserList() {
+        users.forEach(function(user) {
+            var listItem = document.createElement('li');
+            var anchor = document.createElement('a');
+            anchor.classList.add('dropdown-item');
+            anchor.href = '#';
+            anchor.textContent = user;
+            anchor.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default navigation behavior
+                selectUser(user);
+            });
+            listItem.appendChild(anchor);
+            userList.appendChild(listItem);
+        });
+    }
+
+    function populateTable(data, selectedUser) {
         // Clear existing rows
         tbody.innerHTML = '';
 
-        // Populate the table
-        data.forEach(function(rowData) {
-            let row = document.createElement('tr');
+        // Filter tasks based on the selected user
+        const userTasks = selectedUser ? data.filter(task => task.user === selectedUser) : data;
 
-            for (let key in rowData) {
-                let cell = document.createElement('td');
-                let textContentSpan = document.createElement('span');
+        if (userTasks.length === 0) {
+            // If no tasks are assigned to the user, create a single row with a message
+            const noTasksRow = document.createElement('tr');
+            const noTasksCell = document.createElement('td');
+            noTasksCell.colSpan = 7; // Set colSpan to match the number of columns
+            noTasksCell.textContent = selectedUser
+                ? `No tasks assigned for user '${selectedUser}'`
+                : 'No tasks available';
+            noTasksRow.appendChild(noTasksCell);
+            tbody.appendChild(noTasksRow);
+        } else {
+            // Get the list of columns to display (excluding the 'username' column)
+            const columnsToDisplay = Object.keys(userTasks[0]).filter(col => col !== 'user');
 
-                if (key === 'col7') {
-                    textContentSpan.textContent = rowData[key];
-                    setTaskStatusStyle(textContentSpan);
-                    cell.appendChild(textContentSpan);
-                } else {
-                    cell.textContent = rowData[key];
-                }
+            // Populate the table with tasks
+            userTasks.forEach(function(rowData) {
+                var row = document.createElement('tr');
 
-                if (key !== 'col2' && key !== 'col4') {
-                    cell.classList.add('text-center');
-                }
+                columnsToDisplay.forEach(function(key) {
+                    var cell = document.createElement('td');
+                    var textContentSpan = document.createElement('span');
 
-                row.appendChild(cell);
-            }
+                    if (key === 'col7') {
+                        textContentSpan.textContent = rowData[key];
+                        setTaskStatusStyle(textContentSpan);
+                        cell.appendChild(textContentSpan);
+                    } else {
+                        cell.textContent = rowData[key];
+                    }
 
-            tbody.appendChild(row);
-        });
+                    if (key !== 'col2' && key !== 'col4') {
+                        cell.classList.add('text-center');
+                    }
+
+                    row.appendChild(cell);
+                });
+
+                tbody.appendChild(row);
+            });
+        }
     }
 
     function setTaskStatusStyle(span) {
@@ -91,12 +128,40 @@ document.addEventListener('DOMContentLoaded', function() {
         populateTable(data);
     }
 
-    sortTable(0);
+    // Function to filter tasks by selected user
+    function selectUser(selectedUser) {
+        var filteredData;
+
+        if (selectedUser === null) {
+            // Show all tasks for all users
+            filteredData = data;
+        } else {
+            // Filter tasks based on the selected user
+            filteredData = data.filter(function (task) {
+                // Assuming user information is stored in the task data
+                return task.user === selectedUser;
+            });
+        }
+
+        populateTable(filteredData, selectedUser);
+    }
+
+
+    // Initial table population with all tasks
+    populateTable(data);
+
+    // Populate user list
+    populateUserList();
 
     // Add click event listeners to table headers for sorting
     table.querySelectorAll('th').forEach(function(th, index) {
         th.addEventListener('click', function() {
             sortTable(index);
         });
+    });
+
+    // Optional: Add an event listener to show all tasks when "All Users" is selected
+    document.getElementById('allUsersOption').addEventListener('click', function() {
+        selectUser(null);
     });
 });

@@ -9,12 +9,29 @@
     <title>Tasks by user</title>
     <link rel="stylesheet" href="./css/bootstrap.css">
     <link rel="stylesheet" href="./css/styles.css">
+    <style>
+        /* Custom style to position the dropdown to the right */
+        .dropdown-menu {
+            right: 0;
+            left: auto;
+        }
+    </style>
 </head>
 <body>
 <header>
     <h1>Tasks by user</h1>
 </header>
 <main class="container mt-5">
+
+    <div class="dropdown mb-3" style="margin-left: auto;">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Select User
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="userDropdown" id="userList">
+            <li><a id="allUsersOption" class="dropdown-item" onclick="selectUser(null)">All Users</a></li>
+        </ul>
+    </div>
+
     <div class="card border-0 shadow-lg" style="border-radius: 15px; background-color: #41464b">
         <div class="card-body">
             <table class="table table-striped table-bordered" id="tasksTable">
@@ -30,7 +47,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Table rows will go here -->
                 </tbody>
             </table>
         </div>
