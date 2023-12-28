@@ -1,0 +1,35 @@
+scalar LocalDateTime
+
+type Query {
+    getUserById(id: Int): User
+}
+
+type Mutation {
+    addUser(user: UserCreate): User
+    deleteUser(id: Int): String
+    updateUser(user: UserUpdate) : User
+}
+
+type User {
+    id: Int
+    firstName: String
+    lastName: String
+    role: String
+    created: LocalDateTime
+    updated: LocalDateTime
+    tasks: Task
+}
+
+input UserCreate {
+    title: String
+    firstName: String
+    lastName: String
+    role: String
+}
+
+input UserUpdate{
+    id: Int
+    firstName: String
+    lastName: String
+    role: String
+}
