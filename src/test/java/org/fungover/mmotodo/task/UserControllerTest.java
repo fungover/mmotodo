@@ -26,12 +26,10 @@ public class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static int counter;
     private User userStartup;
 
     @BeforeEach
     void setUp() {
-        counter = 1;
         userStartup = new User();
         userStartup.setId(1);
         userStartup.setFirstName("John");
