@@ -21,7 +21,6 @@ type User {
 }
 
 input UserCreate {
-    title: String
     firstName: String
     lastName: String
     role: String

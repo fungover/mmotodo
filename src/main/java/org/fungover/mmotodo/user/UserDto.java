@@ -5,11 +5,12 @@ import jakarta.validation.constraints.PositiveOrZero;
 import org.fungover.mmotodo.task.Task;
 
 public record UserDto(
-        @NotNull
-        @PositiveOrZero
         Integer id,
+        @NotNull
         String firstName,
+        @NotNull
         String lastName,
+        @NotNull
         String role,
         Task tasks
         ) {
