@@ -1,10 +1,8 @@
-scalar LocalDateTime
-
-type Query {
+extend type Query {
     getUserById(id: Int): User
 }
 
-type Mutation {
+extend type Mutation {
     addUser(user: UserCreate): User
     deleteUser(id: Int): String
     updateUser(user: UserUpdate) : User
