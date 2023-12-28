@@ -43,7 +43,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Sample data
             var data = [
-                { col1: '1', col2: 'Create design', col3: '2023-12-13 12:00', col4: 'We need a design that we can discuss around...', col5: '2', col6: 'Design, CoOp', col7: 'In progress' },
+                { col1: '1', col2: 'Create design', col3: '2023-12-13 12:00', col4: 'We need a design that we can discuss around...', col5: '2', col6: 'Design, CoOp', col7: 'ToDo' },
                 { col1: '2', col2: 'Apply design', col3: '2023-12-18 12:00', col4: 'Implement the design', col5: '3', col6: 'Design', col7: 'In progress' },
             ];
 
@@ -52,12 +52,32 @@
 
             // Populate the table
             data.forEach(function(rowData) {
-                var row = document.createElement('tr');
+                const row = document.createElement('tr');
 
                 // Loop through the data object properties
-                for (var key in rowData) {
-                    var cell = document.createElement('td');
-                    cell.textContent = rowData[key];
+                for (let key in rowData) {
+                    const cell = document.createElement('td');
+                    if(key === 'col7'){
+                        var textContentSpan = document.createElement('span');
+                        textContentSpan.textContent = rowData[key];
+                        if(textContentSpan.textContent === 'In progress'){
+                            textContentSpan.classList.add('inProgress')
+                        }else if(textContentSpan.textContent === 'ToDo'){
+                            textContentSpan.classList.add('toDo')
+                        }else if(textContentSpan.textContent === 'Done'){
+                            textContentSpan.classList.add('done')
+                        }else if(textContentSpan.textContent === 'Ready for test'){
+                            textContentSpan.classList.add('readyForTest')
+                        }else if(textContentSpan.textContent === 'Blocked'){
+                            textContentSpan.classList.add('blocked')
+                        }else if(textContentSpan.textContent === 'Code review'){
+                            textContentSpan.classList.add('codeReview')
+                        }
+
+                        cell.appendChild(textContentSpan);
+                    }else{
+                        cell.textContent = rowData[key];
+                    }
                     if(key !== 'col2' && key !== 'col4'){
                         cell.classList.add('text-center');
                     }
@@ -69,5 +89,40 @@
             });
         });
     </script>
+
+    <style>
+        .inProgress {
+            background-color: #198754;
+            padding: 10px;
+            border-radius: 8px;
+            color: whitesmoke;
+        }
+        .readyForTest {
+            background-color: yellow;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .toDo {
+            background-color: #0dcaf0;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .blocked {
+            background-color: red;
+            padding: 10px;
+            border-radius: 8px;
+            color: whitesmoke;
+        }
+        .codeReview {
+            background-color: mediumaquamarine;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .done {
+            background-color: springgreen;
+            padding: 10px;
+            border-radius: 8px;
+        }
+    </style>
 </body>
 </html>
