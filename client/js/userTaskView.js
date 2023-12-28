@@ -91,10 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
         populateTable(data);
     }
 
-
-
-    // Initial table population
-    populateTable(data);
+    sortTable(0);
 
     // Add click event listeners to table headers for sorting
     table.querySelectorAll('th').forEach(function(th, index) {
@@ -102,4 +99,4 @@ document.addEventListener('DOMContentLoaded', function() {
             sortTable(index);
         });
     });
-});            221
+});
