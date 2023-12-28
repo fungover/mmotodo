@@ -45,7 +45,6 @@
             var data = [
                 { col1: '1', col2: 'Create design', col3: '2023-12-13 12:00', col4: 'We need a design that we can discuss around...', col5: '2', col6: 'Design, CoOp', col7: 'In progress' },
                 { col1: '2', col2: 'Apply design', col3: '2023-12-18 12:00', col4: 'Implement the design', col5: '3', col6: 'Design', col7: 'In progress' },
-                // Add more data objects as needed
             ];
 
             // Get the table body
@@ -59,6 +58,9 @@
                 for (var key in rowData) {
                     var cell = document.createElement('td');
                     cell.textContent = rowData[key];
+                    if(key !== 'col2' && key !== 'col4'){
+                        cell.classList.add('text-center');
+                    }
                     row.appendChild(cell);
                 }
 
