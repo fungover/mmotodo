@@ -5,13 +5,15 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.fungover.mmotodo.user.User;
 import org.fungover.mmotodo.task.Task;
+import org.fungover.mmotodo.user.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -37,13 +39,30 @@ public class Team {
     @UpdateTimestamp
     private LocalDateTime updated;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users")
-    private User users;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "team_id")
+    private List<User> users;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tasks")
-    private Task tasks;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "team_id")
+    private List<Task> tasks;
+
+    public void addUser(User user) {
+        users.add(user);
+    }
+
+    public void removeUser(User user) {
+        users.remove(user);
+    }
+
+    public void addTask(Task task) {
+        tasks.add(task);
+    }
+
+    public void removeTask(Task task) {
+        users.remove(task);
+    }
+
 
     @Override
     public final boolean equals(Object o) {

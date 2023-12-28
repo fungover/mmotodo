@@ -20,6 +20,7 @@
         <java.version>21</java.version>
     </properties>
 
+
     <dependencies>
         <dependency>
             <groupId>org.flywaydb</groupId>

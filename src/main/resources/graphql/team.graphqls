@@ -1,0 +1,44 @@
+extend type Query {
+    allTeams: [Team!]!
+    teamById(id: ID): Team
+}
+
+extend type Mutation {
+    createTeam(team: TeamCreate!): Team!
+    updateTeam( team: TeamUpdate!): Team!
+    addUserToTeam(teamId: ID!, userId: ID!):String!
+    addTaskToTeam(teamId: ID!, taskId: ID!): String!
+    removeUserFromTeam(teamId: ID!, userId: ID!): String!
+    removeTaskFromTeam(teamId: ID!, taskId: ID!):String!
+    deleteTeam(id:ID!):String
+}
+
+input TeamCreate {
+    name: String!
+}
+
+input TeamUpdate {
+    id: Int
+    name: String!
+}
+
+type Team {
+    id: Int
+    name: String!
+    users:[User]
+    tasks: [Task]
+    created: LocalDateTime
+    updated: LocalDateTime
+}
+
+type User{
+    id:Int
+    firstName:String!
+    lastName:String!
+    role:String!
+    created:LocalDateTime
+    updated:LocalDateTime
+    tasks:[Task]!
+}
+
+
