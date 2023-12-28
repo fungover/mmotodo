@@ -11,7 +11,6 @@ public record UserDto(
         @NotNull
         String lastName,
         @NotNull
-        String role,
-        Task tasks
+        String role
         ) {
 }

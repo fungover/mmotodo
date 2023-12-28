@@ -2,12 +2,14 @@ package org.fungover.mmotodo.user;
 
 import jakarta.transaction.Transactional;
 import org.fungover.mmotodo.exception.UserNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
 
+    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -17,12 +19,12 @@ public class UserService {
     }
 
     @Transactional
-    public User addUser(UserDto userDto) {
+    public User addUser(UserCreateDto userCreateDto) {
         User user = new User();
 
-        user.setFirstName(userDto.firstName());
-        user.setLastName(userDto.lastName());
-        user.setRole(userDto.role());
+        user.setFirstName(userCreateDto.firstName());
+        user.setLastName(userCreateDto.lastName());
+        user.setRole(userCreateDto.role());
 
         return userRepository.save(user);
     }
