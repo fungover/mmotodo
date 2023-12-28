@@ -7,16 +7,65 @@
     <meta name="viewport" content="width=device-width" />
     <base href="/" />
     <title>Tasks by user</title>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+
 </head>
 <body>
     <header>
         <h1>Tasks by user</h1>
     </header>
-    <main>
-        <div class="container">
-            <div id="greeting">Hello World</div>
+    <main class="container mt-5">
+        <div class="card border-0 shadow-lg" style="border-radius: 15px; background-color: #41464b">
+            <div class="card-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Task No.</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Due date</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Time estimate</th>
+                        <th scope="col">Tags</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Table rows will go here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
+
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample data
+            var data = [
+                { col1: '1', col2: 'Create design', col3: '2023-12-13 12:00', col4: 'We need a design that we can discuss around...', col5: '2', col6: 'Design, CoOp', col7: 'In progress' },
+                { col1: '2', col2: 'Apply design', col3: '2023-12-18 12:00', col4: 'Implement the design', col5: '3', col6: 'Design', col7: 'In progress' },
+                // Add more data objects as needed
+            ];
+
+            // Get the table body
+            var tbody = document.querySelector('tbody');
+
+            // Populate the table
+            data.forEach(function(rowData) {
+                var row = document.createElement('tr');
+
+                // Loop through the data object properties
+                for (var key in rowData) {
+                    var cell = document.createElement('td');
+                    cell.textContent = rowData[key];
+                    row.appendChild(cell);
+                }
+
+                // Append the row to the table body
+                tbody.appendChild(row);
+            });
+        });
+    </script>
 </body>
 </html>
