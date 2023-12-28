@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    var data = [
+    const data = [
         { col1: '1', col2: 'Create design', col3: '2023-12-13 12:00', col4: 'We need a design that we can discuss around...', col5: '2', col6: 'Design, CoOp', col7: 'Done' },
         { col1: '2', col2: 'Create first component', col3: '2023-12-18 12:00', col4: 'Create the first component used in the design', col5: '3', col6: 'Implement', col7: 'Ready for test' },
         { col1: '3', col2: 'Create components', col3: '2023-12-18 12:00', col4: 'Create components used in the design', col5: '3', col6: 'Implement', col7: 'Code review' },
@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
         { col1: '6', col2: 'Deploy', col3: '2023-12-24 12:00', col4: 'Deploy everything', col5: '3', col6: 'Deploy', col7: 'ToDo' },
     ];
 
-    var tbody = document.querySelector('tbody');
-    var table = document.getElementById('tasksTable');
+    const tbody = document.querySelector('tbody');
+    const table = document.getElementById('tasksTable');
 
     function populateTable(data) {
         // Clear existing rows
@@ -17,11 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Populate the table
         data.forEach(function(rowData) {
-            var row = document.createElement('tr');
+            let row = document.createElement('tr');
 
-            for (var key in rowData) {
-                var cell = document.createElement('td');
-                var textContentSpan = document.createElement('span');
+            for (let key in rowData) {
+                let cell = document.createElement('td');
+                let textContentSpan = document.createElement('span');
 
                 if (key === 'col7') {
                     textContentSpan.textContent = rowData[key];
@@ -59,10 +59,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function sortTable(columnIndex) {
-        var isAscending = true;
+        let isAscending = true;
 
-        var thClicked = table.querySelectorAll('th')[columnIndex];
-        var key = thClicked.getAttribute('data-key');
+        let thClicked = table.querySelectorAll('th')[columnIndex];
+        const key = thClicked.getAttribute('data-key');
 
         table.querySelectorAll('th').forEach(function(th, index) {
             if (index !== columnIndex) {
@@ -75,8 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         data.sort(function(a, b) {
-            var valueA = a[key].toUpperCase();
-            var valueB = b[key].toUpperCase();
+            let valueA = a[key].toUpperCase();
+            let valueB = b[key].toUpperCase();
 
             if (isAscending) {
                 return valueA.localeCompare(valueB);
