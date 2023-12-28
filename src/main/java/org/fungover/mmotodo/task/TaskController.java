@@ -4,16 +4,20 @@ import jakarta.validation.Valid;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.graphql.data.method.annotation.SubscriptionMapping;
 import org.springframework.stereotype.Controller;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
 @Controller
 public class TaskController {
     private final TaskService taskService;
+    private final Flux<TaskEvent> taskEvent;
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, Flux<TaskEvent> taskEvent) {
         this.taskService = taskService;
+        this.taskEvent = taskEvent;
     }
 
     @QueryMapping
@@ -49,8 +53,13 @@ public class TaskController {
         return "Could not delete task with id " + id;
     }
 
-    @MutationMapping()
+    @MutationMapping
     public Task updateTask(@Argument @Valid TaskUpdateDto task){
         return taskService.updateTask(task);
+    }
+
+    @SubscriptionMapping
+    public Flux<TaskEvent> taskEvent() {
+        return taskEvent;
     }
 }

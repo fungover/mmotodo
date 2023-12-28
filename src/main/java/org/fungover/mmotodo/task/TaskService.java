@@ -9,6 +9,7 @@ import org.fungover.mmotodo.exception.TaskNotFoundException;
 import org.fungover.mmotodo.tag.Tag;
 import org.fungover.mmotodo.tag.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,16 +22,19 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final CategoryRepository categoryRepository;
     private final TagRepository tagRepository;
+    private final ApplicationEventPublisher publisher;
 
     @Autowired
     public TaskService(
             TaskRepository taskRepository,
             CategoryRepository categoryRepository,
-            TagRepository tagRepository
+            TagRepository tagRepository,
+            ApplicationEventPublisher publisher
     ) {
         this.taskRepository = taskRepository;
         this.categoryRepository = categoryRepository;
         this.tagRepository = tagRepository;
+        this.publisher = publisher;
     }
 
     public Task getTaskById(int id) {
@@ -63,7 +67,10 @@ public class TaskService {
         Category category = categoryRepository.findById(1).orElseThrow(CategoryNotFoundException::new);
         task.setCategory(category);
 
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+        publisher.publishEvent(new TaskEvent(savedTask, TaskAction.CREATED));
+
+        return savedTask;
     }
 
     @Transactional
@@ -71,6 +78,7 @@ public class TaskService {
         var optTask = taskRepository.findById(taskId);
         if(optTask.isPresent()) {
             taskRepository.deleteById(taskId);
+            publisher.publishEvent(new TaskEvent(optTask.get(), TaskAction.DELETED));
             return true;
         }
         return false;
@@ -94,7 +102,10 @@ public class TaskService {
             task.setCategory(category);
         }
 
-        return taskRepository.save(task);
+        Task updatedTask = taskRepository.save(task);
+        publisher.publishEvent(new TaskEvent(updatedTask, TaskAction.UPDATED));
+
+        return updatedTask;
     }
 }
 

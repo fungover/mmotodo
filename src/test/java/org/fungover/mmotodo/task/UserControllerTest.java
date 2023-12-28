@@ -47,7 +47,6 @@ public class UserControllerTest {
         userStartup.setRole("ADMIN");
     }
 
-
     @Test
     void ShouldReturnWithUserById() throws Exception {
         Mockito.when(userService.getUserById(1)).thenReturn(userStartup);
@@ -95,7 +94,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void ShouldUpdateUser() throws Exception{
+    void ShouldUpdateUser() throws Exception {
         UserDto userDto = new UserDto(1, "John", "Deer", "ADMIN");
         userStartup.setLastName("Deer");
 
@@ -145,7 +144,4 @@ public class UserControllerTest {
                 .path("deleteUser")
                 .matchesJson(expected);
     }
-
 }
-
-

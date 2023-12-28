@@ -13,6 +13,21 @@ type Mutation {
     updateTask(task: TaskUpdate) : Task
 }
 
+type Subscription {
+    taskEvent: TaskEvent
+}
+
+enum Action {
+    CREATED
+    DELETED
+    UPDATED
+}
+
+type TaskEvent {
+    task: Task
+    action: Action
+}
+
 type Task {
     id: Int
     title: String
