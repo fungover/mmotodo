@@ -94,6 +94,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (key === 'col7') {
                         textContentSpan.textContent = rowData[key];
                         setTaskStatusStyle(textContentSpan);
+                        cell.classList.add('text-nowrap')
+                        cell.classList.add('align-middle');
                         cell.appendChild(textContentSpan);
                     } else {
                         cell.textContent = rowData[key];
