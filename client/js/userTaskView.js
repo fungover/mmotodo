@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const tbody = document.querySelector('tbody');
     const table = document.getElementById('tasksTable');
     const userList = document.getElementById('userList');
+    let selectedUser = null;
 
     function populateUserList() {
         // Clear existing user list
@@ -160,9 +161,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to filter tasks by selected user
-    function selectUser(selectedUser) {
-        var filteredData = data.filter(function (task) {
-            // Assuming user information is stored in the task data
+    function selectUser(user) {
+        selectedUser = user;
+        const dropdownButton = document.getElementById('dropdownButton');
+        dropdownButton.textContent = user !== null ? (user === '' ? 'Unassigned' : user) : 'All Users';
+
+        // Filter and populate the table
+        const filteredData = data.filter(function (task) {
             return selectedUser !== null ? (selectedUser === '' ? !task.user : task.user === selectedUser) : true;
         });
 
