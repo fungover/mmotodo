@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let thClicked = table.querySelectorAll('th')[columnIndex];
         const key = thClicked.getAttribute('data-key');
 
-        table.querySelectorAll('th').forEach(function(th, index) {
+        table.querySelectorAll('th').forEach(function (th, index) {
             if (index !== columnIndex) {
                 th.classList.remove('ascending', 'descending');
             }
@@ -143,9 +143,9 @@ document.addEventListener('DOMContentLoaded', function() {
             isAscending = false;
         }
 
-        data.sort(function(a, b) {
-            let valueA = a[key].toUpperCase();
-            let valueB = b[key].toUpperCase();
+        data.sort(function (a, b) {
+            let valueA = a[key] !== undefined ? a[key].toUpperCase() : '';
+            let valueB = b[key] !== undefined ? b[key].toUpperCase() : '';
 
             if (isAscending) {
                 return valueA.localeCompare(valueB);
@@ -157,8 +157,9 @@ document.addEventListener('DOMContentLoaded', function() {
         thClicked.classList.toggle('ascending', isAscending);
         thClicked.classList.toggle('descending', !isAscending);
 
-        populateTable(data);
+        populateTable(data, selectedUser);
     }
+
 
     // Function to filter tasks by selected user
     function selectUser(user) {
