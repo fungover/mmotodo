@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { col1: '5', col2: 'Load content', col3: '2023-12-20 12:00', col4: 'Load content', col5: '3', col6: 'Design', col7: 'Blocked', user: 'Liber09' },
         { col1: '6', col2: 'Deploy', col3: '2023-12-24 12:00', col4: 'Deploy everything', col5: '3', col6: 'Deploy', col7: 'ToDo', user: '' },
     ];
-    var users = ['Liber09', 'User 1', 'User 2', 'User 3'];
+    const users = ['Liber09', 'User 1', 'User 2', 'User 3'];
 
     const tbody = document.querySelector('tbody');
     const table = document.getElementById('tasksTable');
@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
         userList.innerHTML = '';
 
         // Add "All Users" option
-        var allUsersOption = document.createElement('li');
-        var allUsersAnchor = document.createElement('a');
+        const allUsersOption = document.createElement('li');
+        const allUsersAnchor = document.createElement('a');
         allUsersAnchor.id = 'allUsersOption';
         allUsersAnchor.classList.add('dropdown-item');
         allUsersAnchor.textContent = 'All Users';
@@ -32,8 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
         userList.appendChild(allUsersOption);
 
         // Add "Unassigned" option
-        var unassignedOption = document.createElement('li');
-        var unassignedAnchor = document.createElement('a');
+        const unassignedOption = document.createElement('li');
+        const unassignedAnchor = document.createElement('a');
         unassignedAnchor.id = 'unassignedOption';
         unassignedAnchor.classList.add('dropdown-item');
         unassignedAnchor.textContent = 'Unassigned';
@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Add user-specific options
         users.forEach(function(user) {
-            var listItem = document.createElement('li');
-            var anchor = document.createElement('a');
+            let listItem = document.createElement('li');
+            let anchor = document.createElement('a');
             anchor.classList.add('dropdown-item');
             anchor.href = '#';
             anchor.textContent = user;
@@ -85,11 +85,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Populate the table with tasks
             userTasks.forEach(function(rowData) {
-                var row = document.createElement('tr');
+                let row = document.createElement('tr');
 
                 columnsToDisplay.forEach(function(key) {
-                    var cell = document.createElement('td');
-                    var textContentSpan = document.createElement('span');
+                    let cell = document.createElement('td');
+                    let textContentSpan = document.createElement('span');
 
                     if (key === 'col7') {
                         textContentSpan.textContent = rowData[key];
