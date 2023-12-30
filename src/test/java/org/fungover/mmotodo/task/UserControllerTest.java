@@ -15,7 +15,7 @@ import org.springframework.graphql.test.tester.GraphQlTester;
 
 @GraphQlTest(UserController.class)
 @Import(value = {GraphQlConfig.class})
-public class UserControllerTest {
+class UserControllerTest {
 
     @Autowired
     private GraphQlTester graphQlTester;
@@ -32,6 +32,7 @@ public class UserControllerTest {
     void setUp() {
         userStartup = new User();
         userStartup.setId(1);
+
         userStartup.setFirstName("John");
         userStartup.setLastName("Doe");
         userStartup.setRole("ADMIN");

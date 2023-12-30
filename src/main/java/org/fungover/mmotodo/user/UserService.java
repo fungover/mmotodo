@@ -15,7 +15,8 @@ public class UserService {
     }
 
     public User getUserById(int id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return userRepository.findById(id).orElseThrow(() ->
+                new UserNotFoundException(id));
     }
 
     @Transactional
@@ -31,7 +32,8 @@ public class UserService {
 
     @Transactional
     public User updateUser(UserDto userDto) {
-        User updatedUser = userRepository.findById(userDto.id()).orElseThrow(UserNotFoundException::new);
+        User updatedUser = userRepository.findById(userDto.id()).orElseThrow(() ->
+                new UserNotFoundException(userDto.id()));
 
         updatedUser.setId(userDto.id());
         updatedUser.setFirstName(userDto.firstName());
@@ -43,7 +45,8 @@ public class UserService {
 
     @Transactional
     public String deleteUser(int id) {
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new UserNotFoundException(id));
         userRepository.deleteById(user.getId());
 
         return "User with id: " + id + " was successfully deleted";

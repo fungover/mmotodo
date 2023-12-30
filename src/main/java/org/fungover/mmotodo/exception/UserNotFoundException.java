@@ -1,7 +1,7 @@
 package org.fungover.mmotodo.exception;
 
-public class UserNotFoundException extends ResourceNotFoundException{
-    public UserNotFoundException() {
-        super("User not found");
+public class UserNotFoundException extends ResourceNotFoundException {
+    public UserNotFoundException(int userId) {
+        super("User not found with ID: " + userId);
     }
 }
