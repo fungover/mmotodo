@@ -18,6 +18,8 @@ import reactor.core.publisher.Flux;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @GraphQlTest
 @Import(value = {GraphQlConfig.class})
@@ -43,6 +45,8 @@ class TaskControllerTest {
 
     private static int counter;
     private List<Task> tasks;
+    private Map<Task, Tag> tagsForTasks;
+    private Map<Task, Category> catsForTasks;
 
     @BeforeEach
     void setUp() {
@@ -50,6 +54,9 @@ class TaskControllerTest {
         tasks = new ArrayList<>();
         tasks.add(createTask("Something"));
         tasks.add(createTask("Nice"));
+
+        tagsForTasks = tasks.stream().collect(Collectors.toMap(Function.identity(), Task::getTag));
+        catsForTasks = tasks.stream().collect(Collectors.toMap(Function.identity(), Task::getCategory));
     }
 
     @Test
@@ -119,6 +126,8 @@ class TaskControllerTest {
     @Test
     void ShouldRespondWithTasksByCategoryId() throws Exception {
         Mockito.when(taskService.getTasksByCategoryId(2)).thenReturn(tasks);
+        Mockito.when(categoryService.categoriesForTasks(tasks)).thenReturn(catsForTasks);
+        Mockito.when(tagService.tagsForTasks(tasks)).thenReturn(tagsForTasks);
 
         // language=GraphQL
         String query = "query { tasksByCategoryId(categoryId: 2) { category { id } } }";
