@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 public class TagService {
     private final TagRepository tagRepository;
 
-    public TagService(TagRepository TagRepository) {
-        this.tagRepository = TagRepository;
+    public TagService(TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
     }
 
     public Map<Task, Tag> tagsForTasks(List<Task> tasks) {
