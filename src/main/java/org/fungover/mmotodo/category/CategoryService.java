@@ -15,10 +15,6 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> category(List<Integer> taskIds) {
-        return categoryRepository.findAllById(taskIds);
-    }
-
     public Map<Task, Category> categoriesForTasks(List<Task> tasks) {
         var categories =categoryRepository.findAll();
         return tasks.stream()
