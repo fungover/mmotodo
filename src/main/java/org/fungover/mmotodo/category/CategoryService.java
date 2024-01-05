@@ -16,7 +16,10 @@ public class CategoryService {
     }
 
     public Map<Task, Category> categoriesForTasks(List<Task> tasks) {
-        var categories =categoryRepository.findAll();
+
+        var categoryIds = tasks.stream().map(task -> task.getCategory().getId()).collect(Collectors.toList());
+        var categories = categoryRepository.findByIdIn(categoryIds);
+
         return tasks.stream()
                 .collect(
                         Collectors.toMap(
@@ -28,5 +31,3 @@ public class CategoryService {
                                                 .orElse(new Category())));
     }
 }
-
-

@@ -16,7 +16,10 @@ public class TagService {
     }
 
     public Map<Task, Tag> tagsForTasks(List<Task> tasks) {
-        var tags = tagRepository.findAll();
+
+        var tagIds = tasks.stream().map(task -> task.getTag().getId()).collect(Collectors.toList());
+        var tags = tagRepository.findByIdIn(tagIds);
+
         return tasks.stream()
                 .collect(
                         Collectors.toMap(
