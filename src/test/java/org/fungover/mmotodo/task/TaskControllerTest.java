@@ -2,7 +2,9 @@ package org.fungover.mmotodo.task;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.fungover.mmotodo.category.Category;
+import org.fungover.mmotodo.category.CategoryService;
 import org.fungover.mmotodo.tag.Tag;
+import org.fungover.mmotodo.tag.TagService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,6 +17,7 @@ import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @GraphQlTest
 @Import(value = {GraphQlConfig.class})
@@ -25,6 +28,12 @@ class TaskControllerTest {
 
     @MockBean
     private TaskService taskService;
+
+    @MockBean
+    private CategoryService categoryService;
+
+    @MockBean
+    private TagService tagService;
 
     @MockBean
     private Flux<TaskEvent> taskEvent;
@@ -66,6 +75,8 @@ class TaskControllerTest {
     void shouldRespondWithTaskData() throws Exception {
         Task task = createTask("Task");
         Mockito.when(taskService.getTaskById(1)).thenReturn(task);
+        Mockito.when(categoryService.categoriesForTasks(List.of(task))).thenReturn(Map.of(task, task.getCategory()));
+        Mockito.when(tagService.tagsForTasks(List.of(task))).thenReturn(Map.of(task, task.getTag()));
 
         // language=GraphQL
         String query = """
