@@ -26,7 +26,7 @@ public class TagService {
                                 task -> task,
                                 task ->
                                         tags.stream()
-                                                .filter(c -> c.getId().equals(task.getTag().getId()))
+                                                .filter(t -> t.getId().equals(task.getTag().getId()))
                                                 .findFirst()
                                                 .orElse(new Tag())));
     }
