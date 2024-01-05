@@ -3,10 +3,8 @@ package org.fungover.mmotodo.category;
 import org.fungover.mmotodo.task.Task;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,7 +29,7 @@ public class CategoryService {
                                         categories.stream()
                                                 .filter(c -> c.getId().equals(task.getCategory().getId()))
                                                 .findFirst()
-                                                .orElse(null)));
+                                                .orElse(new Category())));
     }
 }
 
