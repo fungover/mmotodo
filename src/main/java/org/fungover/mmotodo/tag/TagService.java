@@ -23,7 +23,7 @@ public class TagService {
         return tasks.stream()
                 .collect(
                         Collectors.toMap(
-                                task -> task    ,
+                                task -> task,
                                 task ->
                                         tags.stream()
                                                 .filter(c -> c.getId().equals(task.getTag().getId()))

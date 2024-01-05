@@ -23,7 +23,7 @@ public class CategoryService {
         return tasks.stream()
                 .collect(
                         Collectors.toMap(
-                                task -> task    ,
+                                task -> task,
                                 task ->
                                         categories.stream()
                                                 .filter(c -> c.getId().equals(task.getCategory().getId()))
