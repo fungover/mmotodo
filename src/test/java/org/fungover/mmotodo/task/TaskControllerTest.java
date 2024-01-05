@@ -149,9 +149,7 @@ class TaskControllerTest {
     @Test
     void ShouldRespondWithTasksByTagId() throws Exception {
         Mockito.when(taskService.getTasksByTagId(2)).thenReturn(tasks);
-        Mockito.when(categoryService.categoriesForTasks(tasks)).thenReturn(catsForTasks);
         Mockito.when(tagService.tagsForTasks(tasks)).thenReturn(tagsForTasks);
-
 
         // language=GraphQL
         String query = "query { tasksByTagId(tagId: 2) { tag { id } } }";
