@@ -1,22 +1,28 @@
 package org.fungover.mmotodo.task;
 
 import jakarta.validation.Valid;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.graphql.data.method.annotation.SubscriptionMapping;
+import org.fungover.mmotodo.category.Category;
+import org.fungover.mmotodo.category.CategoryService;
+import org.fungover.mmotodo.tag.Tag;
+import org.fungover.mmotodo.tag.TagService;
+import org.springframework.graphql.data.method.annotation.*;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class TaskController {
     private final TaskService taskService;
+    private final CategoryService categoryService;
+    private final TagService tagService;
     private final Flux<TaskEvent> taskEvent;
 
-    public TaskController(TaskService taskService, Flux<TaskEvent> taskEvent) {
+    public TaskController(TaskService taskService, CategoryService categoryService, TagService tagService, Flux<TaskEvent> taskEvent) {
         this.taskService = taskService;
+        this.categoryService = categoryService;
+        this.tagService = tagService;
         this.taskEvent = taskEvent;
     }
 
@@ -61,5 +67,15 @@ public class TaskController {
     @SubscriptionMapping
     public Flux<TaskEvent> taskEvent() {
         return taskEvent;
+    }
+
+    @BatchMapping
+    public Map<Task, Category> category(List<Task> tasks) {
+        return categoryService.categoriesForTasks(tasks);
+    }
+
+    @BatchMapping
+    public Map<Task, Tag> tag(List<Task> tasks) {
+        return tagService.tagsForTasks(tasks);
     }
 }

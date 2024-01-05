@@ -2,7 +2,9 @@ package org.fungover.mmotodo.task;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.fungover.mmotodo.category.Category;
+import org.fungover.mmotodo.category.CategoryService;
 import org.fungover.mmotodo.tag.Tag;
+import org.fungover.mmotodo.tag.TagService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,6 +17,9 @@ import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @GraphQlTest
 @Import(value = {GraphQlConfig.class})
@@ -27,6 +32,12 @@ class TaskControllerTest {
     private TaskService taskService;
 
     @MockBean
+    private CategoryService categoryService;
+
+    @MockBean
+    private TagService tagService;
+
+    @MockBean
     private Flux<TaskEvent> taskEvent;
 
     @Autowired
@@ -34,6 +45,8 @@ class TaskControllerTest {
 
     private static int counter;
     private List<Task> tasks;
+    private Map<Task, Tag> tagsForTasks;
+    private Map<Task, Category> catsForTasks;
 
     @BeforeEach
     void setUp() {
@@ -41,6 +54,9 @@ class TaskControllerTest {
         tasks = new ArrayList<>();
         tasks.add(createTask("Something"));
         tasks.add(createTask("Nice"));
+
+        tagsForTasks = tasks.stream().collect(Collectors.toMap(Function.identity(), Task::getTag));
+        catsForTasks = tasks.stream().collect(Collectors.toMap(Function.identity(), Task::getCategory));
     }
 
     @Test
@@ -66,6 +82,8 @@ class TaskControllerTest {
     void shouldRespondWithTaskData() throws Exception {
         Task task = createTask("Task");
         Mockito.when(taskService.getTaskById(1)).thenReturn(task);
+        Mockito.when(categoryService.categoriesForTasks(List.of(task))).thenReturn(Map.of(task, task.getCategory()));
+        Mockito.when(tagService.tagsForTasks(List.of(task))).thenReturn(Map.of(task, task.getTag()));
 
         // language=GraphQL
         String query = """
@@ -108,6 +126,8 @@ class TaskControllerTest {
     @Test
     void ShouldRespondWithTasksByCategoryId() throws Exception {
         Mockito.when(taskService.getTasksByCategoryId(2)).thenReturn(tasks);
+        Mockito.when(categoryService.categoriesForTasks(tasks)).thenReturn(catsForTasks);
+        Mockito.when(tagService.tagsForTasks(tasks)).thenReturn(tagsForTasks);
 
         // language=GraphQL
         String query = "query { tasksByCategoryId(categoryId: 2) { category { id } } }";
@@ -129,6 +149,7 @@ class TaskControllerTest {
     @Test
     void ShouldRespondWithTasksByTagId() throws Exception {
         Mockito.when(taskService.getTasksByTagId(2)).thenReturn(tasks);
+        Mockito.when(tagService.tagsForTasks(tasks)).thenReturn(tagsForTasks);
 
         // language=GraphQL
         String query = "query { tasksByTagId(tagId: 2) { tag { id } } }";
