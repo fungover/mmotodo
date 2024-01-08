@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Login Page</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .main-container {
+            text-align: center;
+        }
+
+        p {
+            font-size: 2rem;
+        }
+
+        a {
+            color: black;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+        .authenticated{
+            display: none;
+        }
+        button{
+            padding: 1rem 3rem;
+            background-color: #14011C;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1rem;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+<main class="main-container">
+    <div class="unauthenticated">
+        <p>Sign in using your GitHub account
+            <a href="/oauth2/authorization/github">
+                here
+            </a>
+        </p>
+        <a href="/oauth2/authorization/github">
+            <img src="/images/github_logo.svg" alt="GitHub Logo">
+        </a>
+    </div>
+    <div class="authenticated">
+        <p>Welcome <span id="username"></span>! <br>You are already signed in</p>
+        <button id="logout-button">Logout</button>
+    </div>
+
+</main>
+<script src="/js/login.js"></script>
+</body>
+</html>

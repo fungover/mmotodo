@@ -16,7 +16,7 @@ import reactor.core.publisher.Flux;
 import java.util.ArrayList;
 import java.util.List;
 
-@GraphQlTest
+@GraphQlTest(controllers = TaskController.class)
 @Import(value = {GraphQlConfig.class})
 class TaskControllerTest {
 

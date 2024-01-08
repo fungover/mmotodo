@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Sign out</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
+    <style>
+
+        .popup-overlay {
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+
+        .popup-content {
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            border-radius: 0.5rem;
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 2rem;
+            width: 80%;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        .navigation-button {
+            padding: 1rem 3rem;
+            background-color: #14011C;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1rem;
+            border-radius: 0.5rem;
+        }
+
+    </style>
+</head>
+<body>
+<main class="main-container">
+    <div class="popup-overlay">
+        <div class="popup-content">
+            <div>
+
+                <p th:if="${logoutSuccess}">Sign out from the application was successful!</p>
+                <p th:if="${logoutError}">Error: Couldn't logout user</p>
+            </div>
+            <div>
+                <a href="/" class="navigation-button">Go to Home Page</a>
+            </div>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>
