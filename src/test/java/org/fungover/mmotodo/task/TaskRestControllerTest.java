@@ -1,8 +1,6 @@
 package org.fungover.mmotodo.task;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.fungover.mmotodo.exception.TaskNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -31,12 +28,13 @@ class TaskRestControllerTest {
     @InjectMocks
     private TaskRestController taskRestController;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(taskRestController).build();
     }
+
     @Test
     void getAllTasks() throws Exception {
 
@@ -60,8 +58,8 @@ class TaskRestControllerTest {
 
         // Perform test
         mockMvc.perform(post("/api/tasks")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(taskCreateDto)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(taskCreateDto)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -69,7 +67,7 @@ class TaskRestControllerTest {
     @Test
     void updateTask() throws Exception {
         int taskId = 1;
-        TaskUpdateDto updateDto = new TaskUpdateDto(taskId,"Updated title", "Updated description", "InProgress", 2, 3);
+        TaskUpdateDto updateDto = new TaskUpdateDto(taskId, "Updated title", "Updated description", "InProgress", 2, 3);
 
         Task mockTask = Task.createTestTask(taskId);
 
@@ -82,8 +80,8 @@ class TaskRestControllerTest {
 
         //Perform Test
         mockMvc.perform(put("/api/tasks/" + taskId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updateDto)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -106,16 +104,17 @@ class TaskRestControllerTest {
 
         given(service.deleteTask(1)).willReturn(true);
 
-        mockMvc.perform(delete("/api/tasks/" + taskId ))
+        mockMvc.perform(delete("/api/tasks/" + taskId))
                 .andExpect(status().isNoContent());
     }
+
     @Test
     void deleteTask_NotFound() throws Exception {
         int taskId = 1;
 
         given(service.deleteTask(1)).willReturn(false);
 
-        mockMvc.perform(delete("/api/tasks/" + taskId ))
+        mockMvc.perform(delete("/api/tasks/" + taskId))
                 .andExpect(status().isNotFound());
     }
 }
