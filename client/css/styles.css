@@ -1,0 +1,47 @@
+.inProgress {
+    background-color: #198754;
+    padding: 10px;
+    border-radius: 8px;
+    color: whitesmoke;
+}
+.readyForTest {
+    background-color: #395a26;
+    padding: 10px;
+    border-radius: 8px;
+    color: white;
+}
+.toDo {
+    background-color: #0dcaf0;
+    padding: 10px;
+    border-radius: 8px;
+}
+.blocked {
+    background-color: red;
+    padding: 10px;
+    border-radius: 8px;
+    color: whitesmoke;
+}
+.codeReview {
+    background-color: yellow;
+    padding: 10px;
+    border-radius: 8px;
+}
+.done {
+    background-color: springgreen;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* Styles for sorting indicators */
+th.ascending::after {
+    content: '\25b2'; /* Unicode character for an upward arrow */
+    margin-left: 5px;
+}
+th.descending::after {
+    content: '\25bc'; /* Unicode character for a downward arrow */
+    margin-left: 5px;
+}
+/* for hiding elements when not needed */
+.disabled {
+    display: none;
+}
