@@ -1,0 +1,39 @@
+:root {
+    --primary-color: #808080;
+    --secondary-color: #D9D9D9;
+    --tertiary-color: #2592B4;
+
+    --primary-font: Arial, sans-serif;
+    --secodary-font: Verdana, sans-serif;
+}
+
+body {
+    font-family: var(--primary-font);
+}
+
+.primary-color {
+    color: var(--primary-color);
+}
+
+.secondary-color {
+    color: var(--secondary-color);
+}
+
+.tertiary-color {
+    color: var(--tertiary-color);
+}
+
+.primary-bg-color {
+    background-color: var(--primary-color);
+}
+
+.secondary-bg-color {
+    background-color: var(--secondary-color);
+}
+
+.tertiary-bg-color {
+    background-color: var(--tertiary-color);
+}
+
+
+
