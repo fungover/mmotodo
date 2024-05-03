@@ -41,3 +41,7 @@ th.descending::after {
     content: '\25bc'; /* Unicode character for a downward arrow */
     margin-left: 5px;
 }
+/* for hiding elements when not needed */
+.disabled {
+    display: none;
+}
